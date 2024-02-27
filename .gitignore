@@ -1,0 +1,7 @@
+# Project root .gitignore file
+# Add rules to ignore files or folders in the parent folder
+
+# Add a reference to the .gitignore file in the client folder
+/client/.gitignore
+# Add a reference to the .gitignore file in the server folder
+/server/.gitignore
