@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/auth', require('./routes/user/auth'));
+app.use('/api/task', require('./routes/task/index'));
 
 // Handle Socket.IO connections
 io.on("connection", (socket) => {

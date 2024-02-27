@@ -32,12 +32,15 @@ const taskSchema = new Schema({
     type: Number,
     default: 0,
   },
-  subTask: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "task",
-    },
-  ],
+  subTask: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "task",
+      },
+    ],
+    default: [],
+  },
 });
 
 // name of the collection is 'user'
