@@ -7,6 +7,15 @@ const subTaskSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
+  collab: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    default: [],
+  },
   title: {
     type: String,
     required: true,
@@ -22,7 +31,20 @@ const subTaskSchema = new Schema({
   progress: {
     type: Number,
     default: 0,
-  }
+  },
+  // dont try creating a sub task object with this parameter
+  subTask: {
+    type: [
+      {
+        name: String,
+      },
+    ],
+    default: [],
+  },
+  isSubTask: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 // This is the user model to be used in server database as a collection
