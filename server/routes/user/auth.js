@@ -7,6 +7,7 @@ const fetchUser = require("../../middlewares/fetchUser");
 const UserData = require("../../models/user/UserData");
 require("dotenv").config();
 
+
 // Route 1: Route to login
 router.post("/login", async (req, res) => {
   try {
