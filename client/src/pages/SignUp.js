@@ -1,9 +1,84 @@
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 export const Signup = () =>{
-    return (
-        <div className="w-2/5 h-96 flex flex-col ml-auto mr-auto mt-24 shadow-xl border-2">
-            <h2 className="mt-2">SIGN UP</h2>
-            <div className="mt-16 flex flex-col w-full items-center"><input className="mt-7 h-7 w-4/6" type="email" placeholder="Email..."/><div><input type="password"   placeholder="Password..."/></div></div>
-            <button>SIGN UP</button>
+    const navigate = useNavigate();
+    const [type, setType] = useState('password');
+    const [icon, setIcon] = useState(eyeOff);
+    const [name,setName] = useState("");
+    const [username,setUsername] = useState("");
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("");
+    const handleToggle = () => {
+        if (type==='password'){
+           setIcon(eye);
+           setType('text')
+        } else {
+           setIcon(eyeOff)
+           setType('password')
+        }
+    }
+
+    const registerUser = async()=>{
+        const userRegisterData = {
+            username:username,
+            name:name,
+            password:password,
+            email:email
+        }
+        console.log(process.env.REACT_APP_HOST)
+        axios.post(`${process.env.REACT_APP_HOST}/api/auth/register`,userRegisterData).then((res)=>{
+            console.log(res)
+        })
+    }
+
+    return(
+    <section>
+        <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 md:px-12 lg:px-24 lg:py-24">
+            <div class="justify-center mx-auto text-left align-bottom transition-all transform bg-white rounded-lg sm:align-middle sm:max-w-2xl sm:w-full">
+            <div class="grid flex-wrap items-center justify-center grid-cols-1 mx-auto shadow-xl lg:grid-cols-2 rounded-xl">
+                <div class="w-full px-6 py-3">
+                <div>
+                    <div class="mt-3 text-left sm:mt-5">
+                    <div class="inline-flex items-center w-full">
+                        <h3 class="text-lg font-bold text-neutral-600 l eading-6 lg:text-5xl">Sign up</h3>
+                    </div>
+                    <div class="mt-4 text-base text-gray-500">
+                        <p>Sign up and get our newest news.</p>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 space-y-2">
+                    <div>
+                    <input onChange={(e)=>{setEmail(e.target.value)}} type="email" class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" placeholder="Enter your email"/>
+                    </div>
+                    <div>
+                    <input onChange={(e)=>{setUsername(e.target.value)}} type="text" class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" placeholder="Enter your username"/>
+                    </div>
+                    <div>
+                    <input onChange={(e)=>{setName(e.target.value)}} type="text" class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" placeholder="Enter your name"/>
+                    </div>
+                    <div className='flex flex-row items-center w-full  text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300'>
+                    <input onChange={(e)=>{setPassword(e.target.value)}} type={type} class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" placeholder="Enter your password"/>
+                    <Icon className='ml-2' onClick={()=>{handleToggle()}} type={type} icon = {icon} />
+                    </div>
+                    <div class="flex flex-col mt-4 lg:space-y-2">
+                    <button onClick={()=>{registerUser()}} type="button" class="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Sign up</button>
+                    <a onClick={()=>{navigate("/signin")}} type="button" class="inline-flex justify-center py-4 text-base font-medium text-gray-500 focus:outline-none hover:text-neutral-600 focus:text-blue-600 sm:text-sm"> Already Have an account? Sign In </a>
+                    </div>
+                </div>
+                </div>
+                <div class="order-first hidden w-full lg:block">
+                <img class="object-cover h-full bg-cover rounded-l-lg" src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt=""/>
+                </div>
+            </div>
+            </div>
         </div>
+    </section>
+
     );
 }
