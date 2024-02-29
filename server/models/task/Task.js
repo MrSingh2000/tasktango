@@ -32,6 +32,10 @@ const subTaskSchema = new Schema({
     type: Number,
     default: 0,
   },
+  deadline: {
+    type: String,
+    default: "",
+  },
   // dont try creating a sub task object with this parameter
   subTask: {
     type: [
@@ -73,6 +77,10 @@ const taskSchema = new Schema({
   status: {
     type: Boolean,
     default: false,
+  },
+  deadline: {
+    type: String,
+    default: "",
   },
   progress: {
     type: Number,

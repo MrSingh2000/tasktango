@@ -22,13 +22,14 @@ router.post("/create", fetchUser, async (req, res) => {
       });
     }
 
-    const { title, desc, subTask } = req.body;
+    const { title, desc, subTask, deadline } = req.body;
 
     let newTask = await Task.create({
       owner: userId,
       title,
       desc,
       isSubTask: subTask ? subTask : false,
+      deadline: deadline ? deadline : "",
     });
 
     await UserData.findOneAndUpdate(
@@ -176,6 +177,13 @@ router.put("/create", fetchUser, async (req, res) => {
 
     const { title, desc, updateType, status, taskId } = req.body;
     const task = await Task.findById(taskId);
+    if (!task)
+      return res.status(404).json({
+        error: {
+          code: 404,
+          message: "Task is not found.",
+        },
+      });
 
     let updatedTask;
 

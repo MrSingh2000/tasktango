@@ -17,6 +17,10 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
+  img: {
+    type: String,
+    default: ""
+  },
 });
 
 // name of the collection is 'user'
