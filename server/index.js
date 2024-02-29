@@ -24,6 +24,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", require("./routes/user/auth"));
 app.use("/api/task", require("./routes/task/index"));
+app.use("/api/sub-task", require("./routes/subtask/index"));
+app.use("/api/collab", require("./routes/collab/index"));
+app.use("/api/profile", require("./routes/user/profile"));
 
 // Handle Socket.IO connections
 io.on("connection", (socket) => {

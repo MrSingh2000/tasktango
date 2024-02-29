@@ -8,7 +8,7 @@ const Task = require("../../models/task/Task");
 const { default: mongoose } = require("mongoose");
 const io = require("../..");
 const userSockets = require("../../common");
-const { default: axios } = require("axios");
+const { isOwner, isCollab } = require("../../functions");
 require("dotenv").config();
 
 // ROUTE 1: create a task
@@ -22,13 +22,14 @@ router.post("/create", fetchUser, async (req, res) => {
       });
     }
 
-    const { title, desc, subTask } = req.body;
+    const { title, desc, subTask, deadline } = req.body;
 
     let newTask = await Task.create({
       owner: userId,
       title,
       desc,
       isSubTask: subTask ? subTask : false,
+      deadline: deadline ? deadline : "",
     });
 
     await UserData.findOneAndUpdate(
@@ -147,16 +148,6 @@ router.get("/get/:id", fetchUser, async (req, res) => {
   }
 });
 
-// checks if the user is owner of task
-function isOwner(task, user) {
-  return user.equals(task.owner);
-}
-
-// checks if the user is in collaboration list
-function isCollab(task, user) {
-  return task.collab.includes(user);
-}
-
 // emit event to the collabs and owner
 function emitEvent(task, userId) {
   if (!userSockets || !io) return;
@@ -186,6 +177,13 @@ router.put("/create", fetchUser, async (req, res) => {
 
     const { title, desc, updateType, status, taskId } = req.body;
     const task = await Task.findById(taskId);
+    if (!task)
+      return res.status(404).json({
+        error: {
+          code: 404,
+          message: "Task is not found.",
+        },
+      });
 
     let updatedTask;
 
@@ -195,19 +193,27 @@ router.put("/create", fetchUser, async (req, res) => {
       (isOwner(task, user) || isCollab(task, user))
     ) {
       // check if the user is a collaborator or owner
-      updatedTask = await Task.findByIdAndUpdate(taskId, {
-        $set: {
-          status: status,
+      updatedTask = await Task.findByIdAndUpdate(
+        taskId,
+        {
+          $set: {
+            status: status,
+          },
         },
-      });
+        { new: true }
+      );
     } else if (updateType === "other" && isOwner(task, user)) {
       // if other than status is updated
-      updatedTask = await Task.findByIdAndUpdate(taskId, {
-        $set: {
-          title,
-          desc,
+      updatedTask = await Task.findByIdAndUpdate(
+        taskId,
+        {
+          $set: {
+            title,
+            desc,
+          },
         },
-      });
+        { new: true }
+      );
     } else {
       return res.status(404).json({
         error: {
@@ -219,7 +225,7 @@ router.put("/create", fetchUser, async (req, res) => {
     emitEvent(updatedTask, userId);
     res.status(200).json({
       data: {
-        status: "Done",
+        task: updatedTask,
       },
     });
   } catch (error) {
@@ -228,60 +234,6 @@ router.put("/create", fetchUser, async (req, res) => {
       error: {
         code: 500,
         message: "Internal Server Error Occurred! Try again later.",
-      },
-    });
-  }
-});
-
-// ROUTE 5: create a subtask
-router.post("/create-subtask", fetchUser, async (req, res) => {
-  try {
-    let userId = req.user.id;
-    let user = await User.findById(userId);
-    if (!user) {
-      return res.status(401).json({
-        error: { code: 401, message: "Unauthorized operation." },
-      });
-    }
-
-    const { taskId, title, desc } = req.body;
-
-    // create a new task with 'create' route
-    // Construct the full URL including the protocol, hostname, and port
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
-
-    // Make a request to the relative URL /data
-    const response = await axios({
-      url: `${baseUrl}/api/task/create`,
-      method: "POST",
-      body: {
-        title,
-        desc,
-        subTask: true,
-      },
-      headers: {
-        authToken: req.header("authToken"),
-      },
-    });
-
-    const task = response.data.task;
-
-    const parentTask = await Task.findByIdAndUpdate(taskId, {
-      $push: {
-        subTask: task, // Push newValue into the arrayField
-      },
-    });
-
-    res.status(200).json({
-      data: {
-        task: parentTask,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: {
-        code: 500,
-        message: "Internal Server Error Occurred! Try again later",
       },
     });
   }
