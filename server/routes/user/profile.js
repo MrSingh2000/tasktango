@@ -93,4 +93,41 @@ router.post("/update", [upload.single("img"), fetchUser], async (req, res) => {
   }
 });
 
+// ROUTE 3: search a user profile
+router.get("/search", fetchUser, async (req, res) => {
+  try {
+    let userId = req.user.id;
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        error: { code: 404, message: "Unauthorized operation" },
+      });
+    }
+
+    const searchTerm = req.query.q;
+
+    // Perform a search query in the database based on the search term
+    const searchResults = await User.find({
+      $or: [
+        { username: { $regex: searchTerm, $options: "i" } }, // Case-insensitive search by username
+        { email: { $regex: searchTerm, $options: "i" } }, // Case-insensitive search by email
+      ],
+    }).select('-password');
+
+    res.json({
+      data: {
+        results: searchResults,
+      },
+    });
+  } catch (error) {
+    console.log("Error in update profile route: ", error);
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Internal Server Error Occurred! Try again later",
+      },
+    });
+  }
+});
+
 module.exports = router;
