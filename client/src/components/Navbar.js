@@ -1,7 +1,7 @@
 import { useEffect, useState} from "react";
 
 import { IoMdCloseCircle } from "react-icons/io";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -9,7 +9,7 @@ export const Navbar = ()=> {
   const [userProfileClicked,setUserProfileClicked] = useState(false);
   const [showSidebar,setShowSideBar] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  
+  const navigate = useNavigate();
   const loc = useLocation();
   const isAuthpg = loc.pathname === '/signin' || loc.pathname ===  '/signup';
   const handleResize = () => {
@@ -39,12 +39,12 @@ export const Navbar = ()=> {
         <div class="px-8 mx-auto max-w-7xl">
             <div class="flex items-center justify-between h-16">
                 <div class=" flex items-center">
-                    <a class="flex-shrink-0" href="/">
+                    <a onClick={()=>{navigate('/')}} class="flex-shrink-0" href="/">
                         LOGO
                     </a>
-                    <div class="hidden md:block">
+                    <div onClick={()=>{navigate('/dashboard')}} class="hidden md:block">
                         <div class="flex items-baseline ml-10 space-x-4">
-                            <a class="text-gray-800 hover:text-[#FABB18] dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium" href="/#">
+                            <a  class="text-gray-800 hover:text-[#FABB18] dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                                 Dashboard
                             </a>
                         </div>
@@ -79,21 +79,21 @@ export const Navbar = ()=> {
                                 </div>
                                 {userProfileClicked?<div  class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
                                     <div class="py-1 " role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                        <a href="#" class="block  px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
+                                        <a  class="block  px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
                                             <span class="flex flex-col">
                                                 <span>
                                                     Settings
                                                 </span>
                                             </span>
                                         </a>
-                                        <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
+                                        <a  class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
                                             <span class="flex flex-col">
                                                 <span>
                                                     History
                                                 </span>
                                             </span>
                                         </a>
-                                        <a href="#" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
+                                        <a  class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem">
                                             <span class="flex flex-col">
                                                 <span>
                                                     Logout

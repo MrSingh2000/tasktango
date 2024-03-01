@@ -4,6 +4,7 @@ import './App.css';
 import {Navbar} from './components/Navbar'
 import { Signin } from './pages/SignIn';
 import { Signup } from './pages/SignUp';
+import { DashBoard } from './pages/Dashboard';
 function App() {
   return (
     
@@ -14,7 +15,7 @@ function App() {
         <Routes>
           <Route path='/signin' element = {<Signin />} />
           <Route path = '/signup' element = {<Signup />}/>
-          <Route path='/'/>
+          <Route path = '/dashboard' element={<DashBoard />}/>
           
         </Routes>
       </BrowserRouter>
