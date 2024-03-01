@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 
 import { IoMdCloseCircle } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -8,7 +9,9 @@ export const Navbar = ()=> {
   const [userProfileClicked,setUserProfileClicked] = useState(false);
   const [showSidebar,setShowSideBar] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  
+  const loc = useLocation();
+  const isAuthpg = loc.pathname === '/signin' || loc.pathname ===  '/signup';
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
@@ -25,10 +28,14 @@ export const Navbar = ()=> {
       setShowSideBar(false);
     } 
   }, [isMediumScreen]);
+  if(isAuthpg){
+    return <></>
+  }
+  
   return (
     
 <div className="h-full ">
-    {!showSidebar?<nav class="bg-white dark:bg-gray-800  shadow fixed top-0 w-full ">
+    {!showSidebar?<nav class="bg-white dark:bg-gray-800  shadow fixed top-0 w-full z-20">
         <div class="px-8 mx-auto max-w-7xl">
             <div class="flex items-center justify-between h-16">
                 <div class=" flex items-center">
