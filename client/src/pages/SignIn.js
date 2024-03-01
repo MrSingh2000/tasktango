@@ -6,6 +6,71 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
 
+<<<<<<< HEAD
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import * as yup from "yup"
+export const Signin = () =>{
+    const navigate = useNavigate();
+    const [type, setType] = useState('password');
+    const [icon, setIcon] = useState(eyeOff);
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
+    const [usernameError, setUsernameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [error,setError] = useState("");
+
+    const handleToggle = () => {
+        if (type==='password'){
+           setIcon(eye);
+           setType('text')
+        } else {
+           setIcon(eyeOff)
+           setType('password')
+        }
+    }
+    const userSchema = yup.object().shape({
+        username: yup.string().min(5,"Too short").max(18,"Too long").required("Please enter a username"),
+        password:yup.string().min(8,"Too short").max(20,"Too long").required("Enter a password")
+    })
+    const Login = async() =>{
+        const loginData = {username:username,password:password}
+        setUsernameError("");
+        setPasswordError("");
+        setError("");
+        const isValid = await userSchema.isValid(loginData)
+        if(isValid){
+            axios.post(`${process.env.REACT_APP_HOST}/api/auth/login`,loginData).then((res)=>{
+                console.log(res)
+            }).catch((err)=>{setError("Incorrect Credentials")})
+        }
+        else{
+            try {
+                userSchema.validateSync(loginData, { abortEarly: false });
+            } 
+            catch (validationError) {
+                validationError.inner.forEach((error) => {
+                    switch (error.path) {
+                        
+                        case "username":
+                            setUsernameError(error.message);
+                            break;
+                        
+                        case "password":
+                            setPasswordError(error.message);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
+        }
+        
+=======
 export const Signin = () => {
   const navigate = useNavigate();
   const [type, setType] = useState("password");
@@ -72,6 +137,7 @@ export const Signin = () => {
           }
         });
       }
+>>>>>>> 17cbdc9cd70f28b9a665d174021b49b7372e4e1c
     }
   };
 
@@ -94,6 +160,29 @@ export const Signin = () => {
                 </div>
               </div>
 
+<<<<<<< HEAD
+                    <div class="mt-6 space-y-2">
+                        <div>
+                        
+                        <input onChange={(e)=>{setUsername(e.target.value)}} type="text" class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" placeholder="Enter your username"/>
+                        <p className='text-[#FF0000]'>{usernameError}</p>
+                        </div>
+                        <div className='flex flex-row items-center w-full  text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300'>
+                        <input type={password} onChange={(e)=>{setPassword(e.target.value)}} class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300" placeholder="Enter your password"/>
+                        <Icon className='ml-2' onClick={()=>{handleToggle()}} type={type} icon = {icon} />
+                        </div>
+                        <p className='text-[#FF0000]'>{passwordError}</p>
+                        <div class="flex flex-col mt-4 lg:space-y-2">
+                        <button onClick={()=>{Login()}} type="button" class="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Sign in</button>
+                        <a onClick={()=>{navigate("/signup")}} type="button" class="inline-flex justify-center py-4 text-base font-medium text-gray-500 focus:outline-none hover:text-neutral-600 focus:text-blue-600 sm:text-sm"> Don't Have an account yet? Sign Up</a>
+                        </div>
+                        <p className='text-[#FF0000] text-center'>{error}</p>
+                    </div>
+                    </div>
+                    <div class="order-first hidden w-full lg:block">
+                    <img class="object-cover h-full bg-cover rounded-l-lg" src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt=""/>
+                    </div>
+=======
               <div class="mt-6 space-y-2">
                 <div>
                   <input
@@ -105,6 +194,7 @@ export const Signin = () => {
                     placeholder="Enter your username"
                   />
                   <p className="text-[#FF0000]">{usernameError}</p>
+>>>>>>> 17cbdc9cd70f28b9a665d174021b49b7372e4e1c
                 </div>
                 <div className="flex flex-row items-center w-full  text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
                   <input
