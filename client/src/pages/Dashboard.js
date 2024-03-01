@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useState,useEffect } from "react";
 
@@ -28,3 +29,17 @@ export const DashBoard = () =>{
         </div>
     );
 }
+=======
+import React from "react";
+import { showToast } from "../helpers";
+
+function Dashboard() {
+  return (
+    <div className="bg-green-200 w-full">
+      <button onClick={() => showToast("here")}>click me</button>
+    </div>
+  );
+}
+
+export default Dashboard;
+>>>>>>> 17cbdc9cd70f28b9a665d174021b49b7372e4e1c
