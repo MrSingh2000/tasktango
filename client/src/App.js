@@ -9,9 +9,13 @@ import History from "./pages/History";
 import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
+import { useSelector } from "react-redux";
+import Loader from "./components/Loader";
 
 
 function App() {
+  const loading = useSelector((store) => store.loading.value);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -27,7 +31,6 @@ function App() {
           pauseOnHover
           theme="light"
         />
-        
         <Routes>
           <Route path="/" element={<NavContainer />}>
             <Route path="" element={<DashBoard />} />
