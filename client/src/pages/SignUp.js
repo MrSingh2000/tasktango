@@ -1,6 +1,7 @@
 import {Icon} from 'react-icons-kit';
 import {eyeOff} from 'react-icons-kit/feather/eyeOff';
-import {eye} from 'react-icons-kit/feather/eye'
+import {eye} from 'react-icons-kit/feather/eye';
+import {showToast} from '../helpers/index.js'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -28,11 +29,13 @@ export const Signup = () =>{
         }
     }
     const userSchema = yup.object().shape({
-        username: yup.string().min(5,"Too short").max(18,"Too long").required("Please enter a username"),
-        name: yup.string().required("please enter your name"),
-        email: yup.string().email().required("Email is required"),
-        password:yup.string().min(8,"Too short").max(20,"Too long").required("Enter a password")
+        username: yup.string().min(5,"*Too short").max(18,"*Too long").required("*Please enter a username"),
+        name: yup.string().required("*Please enter your name"),
+        email: yup.string().email("*Email Invalid").required("*Email is required"),
+        password:yup.string().min(8,"*Too short").max(20,"*Too long").required("*Enter a password")
     })
+    
+
     const registerUser = async()=>{
         const userRegisterData = {
             username:username,
@@ -44,11 +47,12 @@ export const Signup = () =>{
         setUsernameError("");
         setEmailError("");
         setPasswordError("");
+        
         const isValid = await userSchema.isValid(userRegisterData)
         console.log(process.env.REACT_APP_HOST)
         if(isValid){
             axios.post(`${process.env.REACT_APP_HOST}/api/auth/register`,userRegisterData).then((res)=>{
-                console.log(res)
+                showToast("Signed Up Successfully!","success");
             }).catch((err)=>{setError("Incorrect Credentials")})
         }
         else{
@@ -56,7 +60,9 @@ export const Signup = () =>{
                 userSchema.validateSync(userRegisterData, { abortEarly: false });
             } 
             catch (validationError) {
+                showToast("Could not complete Sign up","error")
                 validationError.inner.forEach((error) => {
+                    
                     switch (error.path) {
                         case "name":
                             setNameError(error.message);
@@ -74,6 +80,7 @@ export const Signup = () =>{
                             break;
                     }
                 });
+                
             }
         }
         
