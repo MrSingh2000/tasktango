@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
-
+import {showToast} from '../helpers/index.js'
 export const Signin = () => {
   const navigate = useNavigate();
   const [type, setType] = useState("password");
@@ -29,14 +29,14 @@ export const Signin = () => {
   const userSchema = yup.object().shape({
     username: yup
       .string()
-      .min(5, "Too short")
-      .max(18, "Too long")
-      .required("Please enter a username"),
+      .min(5, "*Too short")
+      .max(18, "*Too long")
+      .required("*Please enter a username"),
     password: yup
       .string()
-      .min(8, "Too short")
-      .max(20, "Too long")
-      .required("Enter a password"),
+      .min(8, "*Too short")
+      .max(20, "*Too long")
+      .required("*Enter a password"),
   });
 
   const Login = async () => {
@@ -49,7 +49,7 @@ export const Signin = () => {
       axios
         .post(`${process.env.REACT_APP_HOST}/api/auth/login`, loginData)
         .then((res) => {
-          console.log(res);
+          showToast("Signed In Successfully!","success");
         })
         .catch((err) => {
           setError("Incorrect Credentials");
@@ -58,6 +58,8 @@ export const Signin = () => {
       try {
         userSchema.validateSync(loginData, { abortEarly: false });
       } catch (validationError) {
+        showToast("Could not complete Sign in","error")
+
         validationError.inner.forEach((error) => {
           switch (error.path) {
             case "username":

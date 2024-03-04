@@ -10,6 +10,7 @@ import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
 
+
 function App() {
   return (
     <div className="App">
@@ -26,6 +27,7 @@ function App() {
           pauseOnHover
           theme="light"
         />
+        
         <Routes>
           <Route path="/" element={<NavContainer />}>
             <Route path="" element={<DashBoard />} />
