@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -8,15 +8,21 @@ import { MdHistoryToggleOff } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { IoMdLogOut } from "react-icons/io";
+import Loader from "./Loader";
+import { clearLocalStorage, showToast } from "../helpers";
+import profileImg from "../assets/profile.png";
+import { FaWindowClose } from "react-icons/fa";
 
 function TopNav() {
   const [userProfileClicked, setUserProfileClicked] = useState(false);
   const [showSidebar, setShowSideBar] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const location = useLocation();
+  const navigate = useNavigate();
+  const user = useSelector((store) => store.user);
 
-  const loc = useLocation();
-  const isAuthpg = loc.pathname === "/signin" || loc.pathname === "/signup";
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
@@ -33,9 +39,11 @@ function TopNav() {
       setShowSideBar(false);
     }
   }, [isMediumScreen]);
-  if (isAuthpg) {
-    return <></>;
-  }
+
+  const handleLogout = () => {
+    clearLocalStorage();
+    navigate(";signin");
+  };
 
   return (
     <>
@@ -51,22 +59,24 @@ function TopNav() {
                   }`}
             </div>
             <div className="flex flex-row md:justify-between md:w-fit w-full justify-between items-center">
-              <div className="flex items-center md:ml-6">
+              <div className="flex items-center md:ml-6 justify-between md:justify-start w-full">
+                {/* search bar */}
                 <div className="flex items-baseline space-x-4">
-                  <div class="flex relative flex-row-reverse">
-                    <span class="rounded-r-md inline-flex  items-center px-3 border-t bg-white border-r border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                  <div className="flex relative flex-row-reverse">
+                    <span className="rounded-r-md inline-flex  items-center px-3 border-t bg-white border-r border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                       <CiSearch size={25} />
                     </span>
                     <input
                       type="text"
                       id="email-with-icon"
-                      class=" rounded-l-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      className=" rounded-l-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                       name="email"
                       placeholder="Your email"
                     />
                   </div>
                 </div>
-                <div className="relative hidden md:block">
+                <div className="relative hidden md:flex gap-2 ml-2">
+                  {/* user profile button */}
                   <div className="relative inline-block text-left">
                     <div
                       onClick={() => {
@@ -90,67 +100,59 @@ function TopNav() {
                         </svg>
                       </button>
                     </div>
-                    {userProfileClicked ? (
-                      <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
-                        <div
-                          className="py-1 "
-                          role="menu"
-                          aria-orientation="vertical"
-                          aria-labelledby="options-menu"
-                        >
-                          <a
-                            href="#"
-                            className="block  px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
-                            role="menuitem"
-                          >
-                            <span className="flex flex-col">
-                              <span>Settings</span>
-                            </span>
-                          </a>
-                          <a
-                            href="#"
-                            className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
-                            role="menuitem"
-                          >
-                            <span className="flex flex-col">
-                              <span>History</span>
-                            </span>
-                          </a>
-                          <a
-                            href="#"
-                            className="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
-                            role="menuitem"
-                          >
-                            <span className="flex flex-col">
-                              <span>Logout</span>
-                            </span>
-                          </a>
+                    {userProfileClicked && (
+                      <>
+                        <div class="absolute right-0 w-40 mt-2 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5 p-4">
+                          <img
+                            src={profileImg}
+                            alt="profile"
+                            className="h-[4rem] m-auto rounded-full"
+                          />
+                          <p class="w-full block px-4 py-2 text-md overflow-hidden text-ellipsis font-semibold text-center text-gray-700">
+                            {user.username}
+                          </p>
+                          <p class="w-full block px-4 py-2 text-sm text-center text-gray-700">
+                            {user.name}
+                          </p>
+                          <p class="w-full block px-4 py-2 text-xs text-center text-gray-700">
+                            {user.email}
+                          </p>
                         </div>
-                      </div>
-                    ) : (
-                      <></>
+                      </>
                     )}
                   </div>
-                </div>
-              </div>
-              <div
-                onClick={() => {
-                  setShowSideBar(true);
-                }}
-                className="flex -mr-2 md:hidden"
-              >
-                <button className="text-gray-800 dark:text-white hover:text-gray-300 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
-                  <svg
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    className="w-8 h-8"
-                    viewBox="0 0 1792 1792"
-                    xmlns="http://www.w3.org/2000/svg"
+                  {/* logout button */}
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      showToast("Bye! See you again.");
+                      navigate("/signin");
+                    }}
+                    className="flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
                   >
-                    <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z"></path>
-                  </svg>
-                </button>
+                    <IoMdLogOut size={20} />
+                  </button>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setShowSideBar(true);
+                  }}
+                  className="flex -mr-2 md:hidden"
+                >
+                  <button className="text-gray-800 dark:text-white hover:text-gray-300 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      className="w-8 h-8"
+                      viewBox="0 0 1792 1792"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z"></path>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -161,10 +163,13 @@ function TopNav() {
       {showSidebar && (
         <div
           id="sidebar"
-          className="h-full md:hidden  bg-white dark:bg-gray-800  shadow w-full "
+          className="h-full md:hidden w-full absolute flex justify-center items-center z-20"
         >
-          <div className="px-2 pt-2 pb-3 h-full w-full space-y-1 sm:px-3 flex flex-col items-center justify-between">
-            <div>LOGO</div>
+          <div className="rounded-xl bg-white dark:bg-gray-800 shadow-lg px-2 pt-2 pb-3 h-[90vh] w-[90vw] space-y-1 sm:px-3 flex flex-col items-center justify-between overflow-auto">
+            <div className="sticky -top-2 z-50 bg-custom-yellow flex justify-between dark:bg-gray-800 w-full p-4 rounded-xl">
+              <p>LOGO</p>
+              <FaWindowClose onClick={() => setShowSideBar((prev) => !prev)} size={20} className="text-white hover:text-red-600"/>
+            </div>
             <a
               className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
               href="/#"
@@ -276,7 +281,38 @@ function SideNav() {
 }
 
 function NavContainer() {
-  return (
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [authLoading, setAuthLoading] = useState(false);
+
+  useEffect(() => {
+    setAuthLoading(true);
+    console.log(user);
+    let loadingId;
+    if (!user.authToken) {
+      const timeoutId = setTimeout(() => {
+        navigate("/signin");
+        clearTimeout(loadingId); // Clear the loading timeout if user navigates away
+      }, 2000); // Adjust the delay time as needed
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    } else {
+      loadingId = setTimeout(() => {
+        setAuthLoading(false);
+      }, 2000); // Adjust the delay time as needed
+
+      return () => {
+        clearTimeout(loadingId);
+      };
+    }
+  }, [user.authToken, navigate, user]);
+
+  return authLoading ? (
+    <Loader />
+  ) : (
     // <div>
     <div className="flex">
       <SideNav />

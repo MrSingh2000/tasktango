@@ -15,3 +15,15 @@ export const showToast = (message, type) => {
       break;
   }
 };
+
+export const updateLocalStorage = (data) => {
+  localStorage.setItem("tasktango", JSON.stringify(data));
+};
+
+export const getLocalStorage = () => {
+  return JSON.parse(localStorage.getItem("tasktango"));
+};
+
+export const clearLocalStorage = () => {
+  localStorage.removeItem("tasktango");
+};

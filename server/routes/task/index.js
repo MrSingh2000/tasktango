@@ -239,4 +239,41 @@ router.put("/create", fetchUser, async (req, res) => {
   }
 });
 
+router.post("/all", fetchUser, async (req, res) => {
+  try {
+    let userId = req.user.id;
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(401).json({
+        error: { code: 401, message: "Unauthorized operation." },
+      });
+    }
+
+    const taskArray = req.body.tasks;
+    const collabArray = req.body.collabs;
+    const inviteArray = req.body.invites;
+
+    // Find documents with the array of IDs
+    const tasks = await Task.find({ _id: { $in: taskArray } });
+    const collabs = await Task.find({ _id: { $in: collabArray } });
+    const invites = await Task.find({ _id: { $in: inviteArray } });
+
+    res.json({
+      data: {
+        tasks: tasks.length > 0 ? tasks : [],
+        collabs: collabs.length > 0 ? collabs : [],
+        invites: invites.length > 0 ? invites : [],
+      },
+    });
+  } catch (error) {
+    console.log("error in get all tasks: ", error);
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Internal Server Error Occurred! Try again later",
+      },
+    });
+  }
+});
+
 module.exports = router;
