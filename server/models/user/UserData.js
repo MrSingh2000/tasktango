@@ -32,6 +32,7 @@ const userdataSchema = new Schema({
         from: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
         task: { type: mongoose.Schema.Types.ObjectId, ref: "task" },
         status: { type: Boolean, default: false },
+        date: { type: String, default: Date.now },
       },
     ],
     default: [],

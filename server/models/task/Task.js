@@ -36,6 +36,10 @@ const subTaskSchema = new Schema({
     type: String,
     default: "",
   },
+  created: {
+    type: String,
+    required: true,
+  },
   // dont try creating a sub task object with this parameter
   subTask: {
     type: [
@@ -81,6 +85,10 @@ const taskSchema = new Schema({
   deadline: {
     type: String,
     default: "",
+  },
+  created: {
+    type: String,
+    default: Date.now,
   },
   progress: {
     type: Number,
