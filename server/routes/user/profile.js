@@ -112,7 +112,7 @@ router.get("/search", fetchUser, async (req, res) => {
         { username: { $regex: searchTerm, $options: "i" } }, // Case-insensitive search by username
         { email: { $regex: searchTerm, $options: "i" } }, // Case-insensitive search by email
       ],
-    }).select('-password');
+    }).select("-password");
 
     res.json({
       data: {
@@ -121,6 +121,35 @@ router.get("/search", fetchUser, async (req, res) => {
     });
   } catch (error) {
     console.log("Error in update profile route: ", error);
+    res.status(500).json({
+      error: {
+        code: 500,
+        message: "Internal Server Error Occurred! Try again later",
+      },
+    });
+  }
+});
+
+// ROUTE 4: get user entire data
+router.get("/mydetails", fetchUser, async (req, res) => {
+  try {
+    let userId = req.user.id;
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        error: { code: 404, message: "Unauthorized operation" },
+      });
+    }
+
+    const userData = await UserData.findOne({ userId });
+
+    res.json({
+      data: {
+        details: userData,
+      },
+    });
+  } catch (error) {
+    console.log("Error in all details profile route: ", error);
     res.status(500).json({
       error: {
         code: 500,

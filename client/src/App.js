@@ -9,13 +9,80 @@ import History from "./pages/History";
 import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
-import { useSelector } from "react-redux";
-import Loader from "./components/Loader";
-import Modal from "./pages/Dashboard.js"
-
+import { useDispatch, useSelector } from "react-redux";
+import { getLocalStorage, showToast } from "./helpers";
+import { updateUserState } from "./redux/reducers/userSlice";
+import { useEffect } from "react";
+import axios from "axios";
+import { updateUserDetails } from "./redux/reducers/userDetailsSlice";
+import { updateLoading } from "./redux/reducers/loadingSlice";
 
 function App() {
-  const loading = useSelector((store) => store.loading.value);
+  const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const localStorageUser = getLocalStorage();
+    if (localStorageUser) dispatch(updateUserState(localStorageUser));
+
+  }, []);
+
+  useEffect(() => {
+    const getdata = async () => {
+      if (user) {
+        dispatch(updateLoading(true));
+        try {
+          const response = await axios({
+            url: `${process.env.REACT_APP_HOST}/api/profile/mydetails`,
+            method: "GET",
+            headers: {
+              authToken: user.authToken,
+            },
+          });
+          console.log("resP: ", response.data);
+
+          const details = response.data.data.details;
+          dispatch(
+            updateUserDetails({
+              mytaskid: details.mytask,
+              collabtaskid: details.collabtask,
+              invitationid: details.invitation,
+            })
+          );
+
+          // get documents regarding each document ID
+          const res = await axios({
+            url: `${process.env.REACT_APP_HOST}/api/task/all`,
+            method: "POST",
+            headers: {
+              authToken: user.authToken,
+            },
+            data: {
+              tasks: [...details.mytask],
+              collabs: [...details.collabtask],
+              invites: [...details.invitation],
+            },
+          });
+
+          dispatch(
+            updateUserDetails({
+              tasks: res.data.data.tasks,
+              collabtasks: res.data.data.collabs,
+              invitations: res.data.data.invites,
+            })
+          );
+          dispatch(updateLoading(false));
+        } catch (error) {
+          console.log(error);
+          showToast(error.response.data.error.message, "error");
+          dispatch(updateLoading(false));
+        }
+      }
+    };
+
+    user.authToken && getdata();
+  }, [user, dispatch])
+  
 
   return (
     

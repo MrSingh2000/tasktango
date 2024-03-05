@@ -1,12 +1,9 @@
-import { Icon } from "react-icons-kit";
-import { eyeOff } from "react-icons-kit/feather/eyeOff";
-import { eye } from "react-icons-kit/feather/eye";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { showToast } from "../helpers/index.js";
+import { showToast, updateLocalStorage } from "../helpers/index.js";
 import { updateUserState } from "../redux/reducers/userSlice.js";
 import { updateLoading } from "../redux/reducers/loadingSlice.js";
 import Loader from "../components/Loader.js";
@@ -15,6 +12,7 @@ export const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loading = useSelector((store) => store.loading.value);
+  const user = useSelector((store) => store.user);
 
   const [data, setData] = useState({
     username: "",
@@ -65,15 +63,16 @@ export const Signin = () => {
             .then((response) => {
               console.log("respose: ", response);
               const userInfo = response.data.data.user;
-              dispatch(
-                updateUserState({
-                  authToken,
-                  name: userInfo.name,
-                  username: userInfo.username,
-                  email: userInfo.email,
-                  img: userInfo.img,
-                })
-              );
+              const userState = {
+                authToken,
+                name: userInfo.name,
+                username: userInfo.username,
+                email: userInfo.email,
+                img: userInfo.img,
+              };
+
+              dispatch(updateUserState(userState));
+              updateLocalStorage(userState);
               dispatch(updateLoading(false));
               navigate("/");
             })
