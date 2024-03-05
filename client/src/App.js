@@ -11,12 +11,14 @@ import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
 import { useSelector } from "react-redux";
 import Loader from "./components/Loader";
+import Modal from "./pages/Dashboard.js"
 
 
 function App() {
   const loading = useSelector((store) => store.loading.value);
 
   return (
+    
     <div className="App">
       <BrowserRouter>
         <ToastContainer
