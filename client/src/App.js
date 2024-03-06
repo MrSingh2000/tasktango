@@ -16,15 +16,31 @@ import { useEffect } from "react";
 import axios from "axios";
 import { updateUserDetails } from "./redux/reducers/userDetailsSlice";
 import { updateLoading } from "./redux/reducers/loadingSlice";
+import io from "socket.io-client";
 
 function App() {
+  const socket = io(`${process.env.REACT_APP_HOST}`);
+
+  // Listening for events from the server
+  socket.on("profileUpdate", (data) => {
+    console.log("profile updated");
+  });
+
+  useEffect(() => {
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const localStorageUser = getLocalStorage();
-    if (localStorageUser) dispatch(updateUserState(localStorageUser));
-
+    if (localStorageUser) {
+      dispatch(updateUserState(localStorageUser));
+      console.log("here:", localStorageUser.userId);
+    }
   }, []);
 
   useEffect(() => {
@@ -79,10 +95,9 @@ function App() {
         }
       }
     };
-
+    user.authToken && socket.emit("userId", { userId: user.userId });
     user.authToken && getdata();
-  }, [user, dispatch])
-  
+  }, [user]);
 
   return (
     <div className="App">

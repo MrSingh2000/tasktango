@@ -9,13 +9,16 @@ const socketIo = require("socket.io");
 const { userSockets } = require("./common");
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 app.use(express.json());
 app.use(cors());
 // connecting database
 connectToMongo();
-
 
 // Handle HTTP requests
 app.get("/", (req, res) => {
@@ -41,11 +44,14 @@ io.on("connection", (socket) => {
       delete userSockets[socket.id];
       console.log(`Socket disconnected for user ${userId}`);
     }
+    console.log("removed: ", userSockets);
   });
 
-  socket.on("userId", (userId) => {
-    userSockets[socket.id] = userId;
-    console.log(`Socket connected for user ${userId}`);
+  socket.on("userId", (data) => {
+    console.log("id: ", data);
+    userSockets[socket.id] = data.userId;
+    console.log("users: ", userSockets);
+    console.log(`Socket connected for user ${data.userId}`);
   });
 });
 
@@ -54,5 +60,4 @@ server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-
-module.exports = io ;
+module.exports = io;

@@ -69,6 +69,7 @@ export const Signin = () => {
                 username: userInfo.username,
                 email: userInfo.email,
                 img: userInfo.img,
+                userId: userInfo._id,
               };
 
               dispatch(updateUserState(userState));

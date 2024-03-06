@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../../models/user/User");
 const fetchUser = require("../../middlewares/fetchUser");
 const UserData = require("../../models/user/UserData");
-const { isOwner } = require("../../functions");
-const Task = require("../../models/task/Task");
 require("dotenv").config();
 
 const multer = require("multer");
 var MulterAzureStorage = require("multer-azure-storage");
+const io = require("../..");
 
 var upload = multer({
   storage: new MulterAzureStorage({
