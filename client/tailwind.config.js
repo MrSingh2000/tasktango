@@ -5,7 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "custom-yellow": "#fabb18",
+        'custom-yellow': '#fabb18',
+        'custom-light-yellow' : '#FFF9ED'
       },
     },
   },

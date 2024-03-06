@@ -100,6 +100,7 @@ function App() {
   }, [user]);
 
   return (
+    
     <div className="App">
       <BrowserRouter>
         <ToastContainer
@@ -114,7 +115,6 @@ function App() {
           pauseOnHover
           theme="light"
         />
-
         <Routes>
           <Route path="/" element={<NavContainer />}>
             <Route path="" element={<DashBoard />} />
