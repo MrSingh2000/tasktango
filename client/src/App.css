@@ -1,4 +1,10 @@
-body{
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+
+body {
   overflow: hidden;
   min-height: 100vh;
+}
+
+.custom-font {
+  font-family: 'Open Sans';
 }

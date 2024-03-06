@@ -89,7 +89,7 @@ function TopNav() {
                       <>
                         <div class="absolute right-0 w-40 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5 p-4">
                           <img
-                            src={profileImg}
+                            src={user.img || profileImg}
                             alt="profile"
                             className="h-[4rem] m-auto rounded-full"
                           />
@@ -293,7 +293,7 @@ function NavContainer() {
         clearTimeout(loadingId);
       };
     }
-  }, [user.authToken, navigate, user]);
+  }, [user.authToken, user]);
 
   return authLoading ? (
     <Loader />
