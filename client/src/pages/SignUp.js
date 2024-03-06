@@ -51,7 +51,7 @@ export const Signup = () => {
     const isValid = await userSchema.isValid(data);
     console.log(process.env.REACT_APP_HOST);
     if (isValid) {
-      axios
+      await axios
         .post(`${process.env.REACT_APP_HOST}/api/auth/register`, data)
         .then((res) => {
           showToast("Signed Up Successfully!", "success");
