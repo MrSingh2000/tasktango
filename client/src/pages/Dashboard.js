@@ -42,6 +42,7 @@ export function Modal(props) {
         headers: {
           authToken: user.authToken,
         },
+        data:task,
       })
         .then((res) => {
           showToast("Task Created Successfully!", "success");
@@ -87,7 +88,7 @@ export function Modal(props) {
                   </button>
                 </div>
                 {/*body*/}
-                <form class="max-w-sm mx-auto w-full">
+                <form class="max-w-sm mx-auto md:w-full w-4/5">
                   <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
                   <input name="title" type="text" id="email" onChange={(e) => { handleChange(e) }} aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Task" />
                   <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -146,17 +147,17 @@ function Dashboard() {
   return (
     <div className="flex flex-col items-center w-full h-[calc(100vh-4rem)] bg-gray-100 overflow-auto">
       <div className="flex flex-row w-full justify-between h-1/5 p-4 items-center">
-        <div className="flex flex-col items-center rounded-md justify-center h-5/6 w-4/12 md:w-3/12">
+        <div className="flex flex-col items-center rounded-md justify-center h-5/6 w-6/12 md:w-5/12">
           <div className="font-bold">TODAY</div>
           <div className="font-semibold">{formattedDateTime}</div>
         </div>
-        <div onClick={() => { setShowModal(true) }} className="flex cursor-pointer flex-row items-center justify-around w-4/12  bg-custom-yellow rounded-md h-5/6  md:w-2/12">
+        <div onClick={() => { setShowModal(true) }} className="flex cursor-pointer flex-row items-center justify-around w-4/12  bg-custom-yellow rounded-md h-5/6 lg:w-1/6  md:w-1/5">
           Add New Task
           <IoIosAddCircleOutline className="text-white h-[30px] w-[30px]" />
         </div>
       </div>
-      <div className="flex flex-row items-center justify-evenly w-full">
-        <div class="flex flex-col mt-3 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-72">
+      <div className="flex md:flex-row items-center justify-evenly w-full flex-col">
+        <div class="flex flex-col mt-3 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl  h-full w-72 lg:w-64 md:w-52">
           <div class="px-4 py-3">
             <h4 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 w-full">
               TOTAL PENDING
@@ -169,7 +170,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div class="flex flex-col mt-3 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-72">
+        <div class="flex flex-col mt-3 text-gray-700 bg-white shadow-md bg-clip-border h-full rounded-xl    w-72 lg:w-64 md:w-52">
           <div class="px-4 py-3">
             <h4 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 w-full">
               DEADLINES THIS WEEK
@@ -182,7 +183,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div class="flex flex-col mt-3 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-72">
+        <div class="flex flex-col mt-3 text-gray-700 bg-white shadow-md bg-clip-border h-full rounded-xl  w-72 lg:w-64 md:w-52">
           <div class="px-4 py-3">
             <h4 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 w-full">
               PROJECTS WORKED
@@ -196,9 +197,9 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-evenly p-3 items-center w-full mt-10">
+      <div className="flex md:flex-row  justify-evenly p-3 items-center w-full mt-10 flex-col">
         <div
-          class="block px-6 py-4 w-1/2 text-left font-medium  rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+          class="block px-6 py-4 md:w-1/2 w-4/5  text-left font-medium rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
           RECENT ACTIVITY
 
           <ul class="w-full text-left ">
@@ -237,17 +238,32 @@ function Dashboard() {
 
               </div>
             </li>
+            <li
+              class="w-full border-b-2 font-light border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+              <div className="w-full flex flex-row items-center justify-evenly"><div className="w-1/3">Task</div><div className="w-1/3">DeadLine</div>
+
+                <div class="w-1/3 bg-gray-200 rounded-full dark:bg-gray-700">
+                  <div class="bg-custom-yellow text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: "45%" }}> 45%</div>
+                </div>
+
+              </div>
+            </li>
 
           </ul>
         </div>
         <div
-          class="block px-6 py-4 w-2/5 text-left font-medium  rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+          class="block px-6 py-4 md:w-2/5 w-4/5 text-left md:mt-0 mt-4 font-medium  rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
           DEADLINES THIS WEEK
 
           <ul class="w-full text-left ">
             <li
               class="w-full border-b-2 font-normal text-left border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
               <div className="w-full flex flex-row items-center justify-evenly"><div className="w-3/5">Task</div><div className="w-2/5">DeadLine</div>
+              </div>
+            </li>
+            <li
+              class="w-full border-b-2 font-light border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+              <div className="w-full flex flex-row items-center justify-evenly"><div className="w-3/5">Name</div><div className="w-2/5">DeadLine</div>
               </div>
             </li>
             <li

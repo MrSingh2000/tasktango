@@ -23,22 +23,7 @@ function TopNav() {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
 
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-  const isMediumScreen = windowWidth >= 768;
-  useEffect(() => {
-    if (isMediumScreen && showSidebar) {
-      setShowSideBar(false);
-    }
-  }, [isMediumScreen]);
+  
 
   const handleLogout = () => {
     clearLocalStorage();
@@ -50,7 +35,7 @@ function TopNav() {
       <div className="flex flex-col w-full">
         <nav className="bg-white dark:bg-gray-800  shadow top-0 w-full z-20 h-16 py-4">
           <div className="px-8 mx-auto max-w-7xl flex justify-between w-full items-center">
-            <div className="md:flex items-baseline space-x-4 font-semibold text-2xl hidden">
+            <div className="lg:flex items-baseline space-x-4 font-semibold text-2xl hidden">
               {location.pathname === "/"
                 ? "Dashboard"
                 : `${
@@ -58,12 +43,12 @@ function TopNav() {
                     location.pathname.substring(2)
                   }`}
             </div>
-            <div className="flex flex-row md:justify-between md:w-fit w-full justify-between items-center">
-              <div className="flex items-center md:ml-6 justify-between md:justify-start w-full">
+            <div className="flex flex-row lg:justify-between lg:w-fit w-full justify-between items-center">
+              <div className="flex items-center lg:ml-6 justify-between lg:justify-start w-full">
                 {/* search bar */}
                 <div className="flex items-baseline space-x-4">
                   <div className="flex relative flex-row-reverse">
-                    <span className="rounded-r-md inline-flex  items-center px-3 border-t bg-white border-r border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                    <span className="rounded-r-lg inline-flex  items-center px-3 border-t bg-white border-r border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                       <CiSearch size={25} />
                     </span>
                     <input
@@ -75,7 +60,7 @@ function TopNav() {
                     />
                   </div>
                 </div>
-                <div className="relative hidden md:flex gap-2 ml-2">
+                <div className="relative hidden lg:flex gap-2 ml-2">
                   {/* user profile button */}
                   <div className="relative inline-block text-left">
                     <div
@@ -85,7 +70,7 @@ function TopNav() {
                     >
                       <button
                         type="button"
-                        className="  flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
+                        className="  flex items-center justify-center w-full rounded-lg  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
                         id="options-menu"
                       >
                         <svg
@@ -102,13 +87,13 @@ function TopNav() {
                     </div>
                     {userProfileClicked && (
                       <>
-                        <div class="absolute right-0 w-40 mt-2 origin-top-right bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5 p-4">
+                        <div class="absolute right-0 w-40 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5 p-4">
                           <img
                             src={profileImg}
                             alt="profile"
                             className="h-[4rem] m-auto rounded-full"
                           />
-                          <p class="w-full block px-4 py-2 text-md overflow-hidden text-ellipsis font-semibold text-center text-gray-700">
+                          <p class="w-full block px-4 py-2 text-lg overflow-hidden text-ellipsis font-semibold text-center text-gray-700">
                             {user.username}
                           </p>
                           <p class="w-full block px-4 py-2 text-sm text-center text-gray-700">
@@ -128,7 +113,7 @@ function TopNav() {
                       showToast("Bye! See you again.");
                       navigate("/signin");
                     }}
-                    className="flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
+                    className="flex items-center justify-center w-full rounded-lg  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
                   >
                     <IoMdLogOut size={20} />
                   </button>
@@ -138,9 +123,9 @@ function TopNav() {
                   onClick={() => {
                     setShowSideBar(true);
                   }}
-                  className="flex -mr-2 md:hidden"
+                  className="flex -mr-2 lg:hidden"
                 >
-                  <button className="text-gray-800 dark:text-white hover:text-gray-300 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
+                  <button className="text-gray-800 dark:text-white hover:text-gray-300 inline-flex items-center justify-center p-2 rounded-lg focus:outline-none">
                     <svg
                       width="20"
                       height="20"
@@ -163,7 +148,7 @@ function TopNav() {
       {showSidebar && (
         <div
           id="sidebar"
-          className="h-full md:hidden w-full absolute flex justify-center items-center z-20"
+          className="h-full lg:hidden w-full absolute flex justify-center  backdrop-blur-sm items-center z-20"
         >
           <div className="rounded-xl bg-white dark:bg-gray-800 shadow-lg px-2 pt-2 pb-3 h-[90vh] w-[90vw] space-y-1 sm:px-3 flex flex-col items-center justify-between overflow-auto">
             <div className="sticky -top-2 z-50 bg-custom-yellow flex justify-between dark:bg-gray-800 w-full p-4 rounded-xl">
@@ -171,37 +156,37 @@ function TopNav() {
               <FaWindowClose onClick={() => setShowSideBar((prev) => !prev)} size={20} className="text-white hover:text-red-600"/>
             </div>
             <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
               href="/#"
             >
               Dashboard
             </a>
             <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
               href="/#"
             >
               Create+
             </a>
             <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
               href="/#"
             >
               Tasks
             </a>
             <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
               href="/#"
             >
               History
             </a>
             <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
               href="/#"
             >
               Settings
             </a>
             <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-md text-base font-medium "
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
               href="/#"
             >
               Log out
@@ -243,7 +228,7 @@ function SideNav() {
   ];
 
   return (
-    <div className="w-full md:w-1/3 lg:w-1/5 md:block hidden h-screen shadow-lg">
+    <div className="w-full  lg:w-1/5 lg:block hidden h-screen shadow-lg">
       <div className="w-fit m-auto p-10 text-2xl font-bold">
         TaskTang
         <span className="text-custom-yellow text-5xl relative top-1">o</span>
