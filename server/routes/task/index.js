@@ -41,8 +41,6 @@ router.post("/create", fetchUser, async (req, res) => {
       }
     );
 
-    // TODO: can use io.emit() here
-
     res.status(200).json({
       data: {
         task: newTask,

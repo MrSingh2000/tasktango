@@ -8,31 +8,46 @@ import { MdHistoryToggleOff } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { IoMdCloseCircle } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IoMdLogOut } from "react-icons/io";
 import Loader from "./Loader";
-import { clearLocalStorage, showToast } from "../helpers";
+import { clearLocalStorage, getUser, showToast } from "../helpers";
 import profileImg from "../assets/profile.png";
 import { FaWindowClose } from "react-icons/fa";
 
 function TopNav() {
   const [userProfileClicked, setUserProfileClicked] = useState(false);
   const [showSidebar, setShowSideBar] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [searchResults, setSearchResults] = useState([]);
+  const [search, setSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
 
-  
+  useEffect(() => {
+    const getSearch = async () => {
+      if (!search) {
+        setSearchResults([]);
+        return;
+      }
+      try {
+        const response = await getUser(search, user.authToken);
+        setSearchResults([...response]);
+      } catch (err) {
+        showToast(err, "Error");
+      }
+    };
+    getSearch();
+  }, [search]);
 
   const handleLogout = () => {
     clearLocalStorage();
-    navigate(";signin");
+    navigate("/signin");
   };
 
   return (
     <>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full bg-white dark:bg-gray-800">
         <nav className="bg-white dark:bg-gray-800  shadow top-0 w-full z-20 h-16 py-4">
           <div className="px-8 mx-auto max-w-7xl flex justify-between w-full items-center">
             <div className="lg:flex items-baseline space-x-4 font-semibold text-2xl hidden">
@@ -46,7 +61,7 @@ function TopNav() {
             <div className="flex flex-row lg:justify-between lg:w-fit w-full justify-between items-center">
               <div className="flex items-center lg:ml-6 justify-between lg:justify-start w-full">
                 {/* search bar */}
-                <div className="flex items-baseline space-x-4">
+                <div className="relative inline-block text-left space-x-4">
                   <div className="flex relative flex-row-reverse">
                     <span className="rounded-r-lg inline-flex  items-center px-3 border-t bg-white border-r border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                       <CiSearch size={25} />
@@ -54,10 +69,36 @@ function TopNav() {
                     <input
                       type="text"
                       id="email-with-icon"
-                      className=" rounded-l-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                      onChange={(e) => setSearch(e.target.value)}
+                      className=" rounded-l-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-custom-yellow focus:border-transparent"
                       name="email"
-                      placeholder="Your email"
+                      placeholder="Search by mail/username"
                     />
+                  </div>
+                  <div class="absolute right-0 w-60 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
+                    {searchResults.map((user, index) => {
+                      return (
+                        <div key={index}>
+                          <button
+                            type="button"
+                            class=" bg-white dark:bg-gray-800 shadow-sm flex items-center justify-start gap-3 w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-100"
+                            id="options-menu"
+                          >
+                            <span>
+                              <img
+                                className="w-8"
+                                src={user.img || profileImg}
+                                alt="profile"
+                              />
+                            </span>
+                            <span className="flex flex-col items-start">
+                              <span>{user.username}</span>
+                              <span className="text-xs font-base text-gray-400">{user.name}</span>
+                            </span>
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
                 <div className="relative hidden lg:flex gap-2 ml-2">
@@ -70,14 +111,13 @@ function TopNav() {
                     >
                       <button
                         type="button"
-                        className="  flex items-center justify-center w-full rounded-lg  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
+                        className="flex items-center justify-center w-full rounded-lg  px-4 py-2 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
                         id="options-menu"
                       >
                         <svg
                           width="20"
                           fill="currentColor"
                           height="20"
-                          className="text-gray-800"
                           viewBox="0 0 1792 1792"
                           xmlns="http://www.w3.org/2000/svg"
                         >
@@ -113,7 +153,7 @@ function TopNav() {
                       showToast("Bye! See you again.");
                       navigate("/signin");
                     }}
-                    className="flex items-center justify-center w-full rounded-lg  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
+                    className="flex items-center justify-center w-full rounded-lg  px-4 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
                   >
                     <IoMdLogOut size={20} />
                   </button>
@@ -142,7 +182,9 @@ function TopNav() {
             </div>
           </div>
         </nav>
-        <Outlet />
+        <div className="bg-gray-100 dark:bg-gray-600">
+          <Outlet />
+        </div>
       </div>
 
       {showSidebar && (
@@ -153,7 +195,11 @@ function TopNav() {
           <div className="rounded-xl bg-white dark:bg-gray-800 shadow-lg px-2 pt-2 pb-3 h-[90vh] w-[90vw] space-y-1 sm:px-3 flex flex-col items-center justify-between overflow-auto">
             <div className="sticky -top-2 z-50 bg-custom-yellow flex justify-between dark:bg-gray-800 w-full p-4 rounded-xl">
               <p>LOGO</p>
-              <FaWindowClose onClick={() => setShowSideBar((prev) => !prev)} size={20} className="text-white hover:text-red-600"/>
+              <FaWindowClose
+                onClick={() => setShowSideBar((prev) => !prev)}
+                size={20}
+                className="text-white hover:text-red-600"
+              />
             </div>
             <a
               className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
@@ -228,7 +274,7 @@ function SideNav() {
   ];
 
   return (
-    <div className="w-full  lg:w-1/5 lg:block hidden h-screen shadow-lg">
+    <div className="w-full  lg:w-1/5 lg:block hidden h-screen shadow-lg bg-white dark:bg-gray-800">
       <div className="w-fit m-auto p-10 text-2xl font-bold">
         TaskTang
         <span className="text-custom-yellow text-5xl relative top-1">o</span>
@@ -244,12 +290,16 @@ function SideNav() {
               {({ isActive, isPending, isTransitioning }) => (
                 <li
                   className={`${
-                    isActive ? "bg-black text-white" : "text-black"
+                    isActive
+                      ? "bg-black text-white dark:bg-white dark:text-black"
+                      : "text-black dark:text-white"
                   } p-4 flex w-3/4 items-center gap-3 rounded-xl`}
                 >
                   <span
                     className={`${
-                      isActive ? "text-custom-yellow" : "text-black"
+                      isActive
+                        ? "text-custom-yellow"
+                        : "text-black dark:text-white"
                     }`}
                   >
                     {item.icon}
@@ -268,8 +318,8 @@ function SideNav() {
 function NavContainer() {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [authLoading, setAuthLoading] = useState(false);
+  const loading = useSelector((store) => store.loading.value);
 
   useEffect(() => {
     setAuthLoading(true);
@@ -295,15 +345,13 @@ function NavContainer() {
     }
   }, [user.authToken, user]);
 
-  return authLoading ? (
+  return authLoading || loading ? (
     <Loader />
   ) : (
-    // <div>
     <div className="flex">
       <SideNav />
       <TopNav />
     </div>
-    // {/* </div> */}
   );
 }
 
