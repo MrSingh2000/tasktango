@@ -132,6 +132,25 @@ export const getUser = (search, authToken) => {
   });
 };
 
+export const getUserById = (userId, authToken) => {
+  if (!authToken || !userId) return;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${process.env.REACT_APP_HOST}/api/profile/find?id=${userId}`,
+        headers: {
+          authToken: authToken,
+        },
+      });
+
+      resolve(response.data.data.user);
+    } catch (error) {
+      reject(error.response.data.error.message);
+    }
+  });
+}
+
 // function to get all details of user and respective task documents
 export function useUpdate(props) {
   const dispatch = useDispatch();
