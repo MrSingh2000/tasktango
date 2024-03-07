@@ -17,6 +17,7 @@ import axios from "axios";
 import { updateUserDetails } from "./redux/reducers/userDetailsSlice";
 import { updateLoading } from "./redux/reducers/loadingSlice";
 import io from "socket.io-client";
+import Assigned from "./pages/Assigned";
 
 function App() {
   const socket = io(`${process.env.REACT_APP_HOST}`);
@@ -71,6 +72,7 @@ function App() {
             <Route path="history" element={<History />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="assigned" element = {<Assigned />} />
           </Route>
 
           <Route path="/signin" element={<Signin />} />
