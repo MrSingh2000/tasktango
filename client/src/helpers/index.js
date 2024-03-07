@@ -151,6 +151,32 @@ export const getUserById = (userId, authToken) => {
   });
 }
 
+export const calculateTaskProgress = (task) => {
+  let totalSubTasks = 0;
+  let completedSubTasks = 0;
+
+  // If it's a main task with subtasks, calculate progress based on subtasks
+  if (!task.isSubTask && task.subTask.length > 0) {
+    task.subTask.forEach((subTask) => {
+      totalSubTasks++;
+      if (subTask.status) {
+        completedSubTasks++;
+      }
+    });
+  } else {
+    // If it's a standalone task or a subtask without subtasks
+    totalSubTasks = 1;
+    if (task.status) {
+      completedSubTasks = 1;
+    }
+  }
+
+  // Calculate progress percentage
+  const progress = totalSubTasks > 0 ? (completedSubTasks / totalSubTasks) * 100 : 0;
+
+  return progress;
+};
+
 // function to get all details of user and respective task documents
 export function useUpdate(props) {
   const dispatch = useDispatch();
@@ -191,9 +217,11 @@ export function useUpdate(props) {
           },
         });
 
+        const filteredTasks = res.data.data.tasks.filter(task => !task.isSubTask);
+
         dispatch(
           updateUserDetails({
-            tasks: res.data.data.tasks,
+            tasks: filteredTasks,
             collabtasks: res.data.data.collabs,
             invitations: res.data.data.invites,
           })

@@ -37,28 +37,52 @@ function Addtask(props) {
       showToast("Title is Empty", "error");
     } else if (task.desc === "") {
       showToast("Task Description is Empty", "error");
-    } else if (!isDeadlineValid) {
+    } else if (!props.subtask & !isDeadlineValid) {
       showToast("Deadline must be in future.", "error");
     } else {
-      axios({
-        url: `${process.env.REACT_APP_HOST}/api/task/create`,
-        method: "POST",
-        headers: {
-          authToken: user.authToken,
-        },
-        data: task,
-      })
-        .then((res) => {
-          showToast("Task Created Successfully!", "success");
-          props.setShowModal(false);
-          getUserNtasksUpdate();
-          navigate("/");
+      if (!props.subtask)
+        axios({
+          url: `${process.env.REACT_APP_HOST}/api/task/create`,
+          method: "POST",
+          headers: {
+            authToken: user.authToken,
+          },
+          data: task,
         })
-        .catch((err) => {
-          showToast(err.response.data.error.message, "error");
-          props.setShowModal(false);
-          dispatch(updateLoading(false));
-        });
+          .then((res) => {
+            showToast("Task Created Successfully!", "success");
+            props.setShowModal(false);
+            getUserNtasksUpdate();
+            navigate("/");
+          })
+          .catch((err) => {
+            showToast(err.response.data.error.message, "error");
+            props.setShowModal(false);
+            dispatch(updateLoading(false));
+          });
+      else
+        axios({
+          url: `${process.env.REACT_APP_HOST}/api/sub-task/create`,
+          method: "POST",
+          headers: {
+            authToken: user.authToken,
+          },
+          data: {
+            title: task.title,
+            desc: task.desc,
+            taskId: props.task._id,
+          },
+        })
+          .then((res) => {
+            showToast("Task Created Successfully!", "success");
+            props.setShowModal(false);
+            getUserNtasksUpdate();
+          })
+          .catch((err) => {
+            showToast(err.response.data.error.message, "error");
+            props.setShowModal(false);
+            dispatch(updateLoading(false));
+          });
     }
   };
 
@@ -72,7 +96,9 @@ function Addtask(props) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none bg-white dark:bg-neutral-700">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t w-full">
-                  <h3 className="text-3xl font-semibold w-full">Modal Title</h3>
+                  <h3 className="text-3xl font-semibold w-full">{` ${
+                    props.subtask ? `${props.task.title}'s Subtask` : "Add Task"
+                  }`}</h3>
                 </div>
                 {/*body*/}
                 <form className="max-w-sm mx-auto md:w-full w-4/5 p-3">
@@ -111,20 +137,24 @@ function Addtask(props) {
                     placeholder="About Task..."
                   ></textarea>
                   {/* deadline */}
-                  <label
-                    for="date"
-                    className="block text-sm font-medium text-gray-700 my-2"
-                  >
-                    Select a Deadline:
-                  </label>
-                  <input
-                    type="date"
-                    id="date"
-                    name="deadline"
-                    min={minDeadline}
-                    onChange={(e) => handleChange(e)}
-                    className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  />
+                  {!props.subtask && (
+                    <>
+                      <label
+                        for="date"
+                        className="block text-sm font-medium text-gray-700 my-2"
+                      >
+                        Select a Deadline:
+                      </label>
+                      <input
+                        type="date"
+                        id="date"
+                        name="deadline"
+                        min={minDeadline}
+                        onChange={(e) => handleChange(e)}
+                        className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </>
+                  )}
                 </form>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
@@ -142,7 +172,7 @@ function Addtask(props) {
                       createTask();
                     }}
                   >
-                    Add New Task
+                    {`Add New ${props.subtask ? "Subtask" : "Task"}`}
                   </button>
                 </div>
               </div>

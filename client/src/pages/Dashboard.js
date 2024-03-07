@@ -62,7 +62,7 @@ function Dashboard() {
   });
 
   return showModal ? (
-    <Addtask showModal={showModal} setShowModal={setShowModal} />
+    <Addtask showModal={showModal} setShowModal={setShowModal} subtask={false}/>
   ) : (
     <div className="flex flex-col items-center w-full h-[calc(100vh-4rem)] bgoverflow-auto">
       <div className="flex flex-row w-full justify-between h-1/5 p-4 items-center">

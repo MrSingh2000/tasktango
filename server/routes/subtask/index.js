@@ -40,15 +40,22 @@ router.post("/create", fetchUser, async (req, res) => {
 
     const task = response.data.data.task;
 
-    const parentTask = await Task.findByIdAndUpdate(
-      taskId,
-      {
-        $push: {
-          subTask: task, // Push newValue into the arrayField
+    console.log("task: ", task);
+    let parentTask;
+    try {
+      parentTask = await Task.findByIdAndUpdate(
+        taskId,
+        {
+          $push: {
+            subTask: task, // Push newValue into the arrayField
+          },
         },
-      },
-      { new: true }
-    );
+        { new: true }
+      );
+    } catch (error) {
+      console.log("here error: ", error);
+    }
+    console.log('parentTask')
 
     res.status(200).json({
       data: {
