@@ -117,7 +117,7 @@ router.get("/search", fetchUser, async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("Error in update profile route: ", error);
+    console.log("Error in search profile route: ", error);
     res.status(500).json({
       error: {
         code: 500,

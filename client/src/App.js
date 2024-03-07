@@ -10,7 +10,7 @@ import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocalStorage, showToast } from "./helpers";
+import { getLocalStorage, showToast, useUpdate } from "./helpers";
 import { updateUserState } from "./redux/reducers/userSlice";
 import { useEffect } from "react";
 import axios from "axios";
@@ -25,6 +25,8 @@ function App() {
   socket.on("profileUpdate", (data) => {
     console.log("profile updated");
   });
+
+  const [getUserNtasksUpdate] = useUpdate();
 
   useEffect(() => {
     return () => {
@@ -44,64 +46,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const getdata = async () => {
-      if (user) {
-        dispatch(updateLoading(true));
-        try {
-          const response = await axios({
-            url: `${process.env.REACT_APP_HOST}/api/profile/mydetails`,
-            method: "GET",
-            headers: {
-              authToken: user.authToken,
-            },
-          });
-          console.log("resP: ", response.data);
-
-          const details = response.data.data.details;
-          dispatch(
-            updateUserDetails({
-              mytaskid: details.mytask,
-              collabtaskid: details.collabtask,
-              invitationid: details.invitation,
-            })
-          );
-
-          // get documents regarding each document ID
-          const res = await axios({
-            url: `${process.env.REACT_APP_HOST}/api/task/all`,
-            method: "POST",
-            headers: {
-              authToken: user.authToken,
-            },
-            data: {
-              tasks: [...details.mytask],
-              collabs: [...details.collabtask],
-              invites: [...details.invitation],
-            },
-          });
-
-          dispatch(
-            updateUserDetails({
-              tasks: res.data.data.tasks,
-              collabtasks: res.data.data.collabs,
-              invitations: res.data.data.invites,
-            })
-          );
-          dispatch(updateLoading(false));
-        } catch (error) {
-          console.log(error);
-          showToast(error.response.data.error.message, "error");
-          dispatch(updateLoading(false));
-        }
-      }
-    };
     user.authToken && socket.emit("userId", { userId: user.userId });
-    user.authToken && getdata();
+    user.authToken && getUserNtasksUpdate();
   }, [user]);
 
   return (
-    
-    <div className="App">
+    <div className="App text-black dark:text-white">
       <BrowserRouter>
         <ToastContainer
           position="top-right"

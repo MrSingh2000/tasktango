@@ -29,7 +29,7 @@ function Settings() {
   }, [darkmode]);
 
   return (
-    <div className="w-full h-[calc(100vh-4rem)] container flex flex-col items-center p-4 dark:bg-gray-800">
+    <div className="w-full h-[calc(100vh-4rem)] container flex flex-col items-center p-4">
       <div className="flex ml-2">
         <img
           src={user.img || profileImg}
@@ -46,7 +46,7 @@ function Settings() {
         />
         <FaPencil onClick={handlePic} size={30} className="shadow-lg hover:shadow-xl hover:scale-110 transition-all cursor-pointer p-2 rounded-xl ml-2"/>
       </div>
-      <div className="shadow-lg rounded-lg w-full md:w-1/2 lg:w-1/3 p-4 mt-2 custom-font dark:bg-gray-950 dark:text-white text-black">
+      <div className="shadow-lg rounded-lg w-full md:w-1/2 lg:w-1/3 p-4 mt-2 custom-font dark:bg-gray-950">
         <p className="text-xl font-semibold text-center mb-4">
           {user.username}
         </p>
