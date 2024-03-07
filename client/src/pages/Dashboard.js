@@ -64,7 +64,7 @@ function Dashboard() {
   return showModal ? (
     <Addtask showModal={showModal} setShowModal={setShowModal} />
   ) : (
-    <div className="flex flex-col items-center w-full h-[calc(100vh-4rem)] bgoverflow-auto">
+    <div className="flex flex-col items-center w-full h-[calc(100vh-4rem)] overflow-auto">
       <div className="flex flex-row w-full justify-between h-1/5 p-4 items-center">
         <div className="flex flex-col items-start rounded-md justify-start h-5/6 w-6/12 md:w-5/12">
           <div className="font-bold text-2xl">TODAY</div>
