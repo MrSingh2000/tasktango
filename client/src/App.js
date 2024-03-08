@@ -10,13 +10,11 @@ import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocalStorage, showToast, useUpdate } from "./helpers";
+import { getLocalStorage, useUpdate } from "./helpers";
 import { updateUserState } from "./redux/reducers/userSlice";
 import { useEffect } from "react";
-import axios from "axios";
-import { updateUserDetails } from "./redux/reducers/userDetailsSlice";
-import { updateLoading } from "./redux/reducers/loadingSlice";
 import io from "socket.io-client";
+import Notification from "./pages/Notification";
 
 function App() {
   const socket = io(`${process.env.REACT_APP_HOST}`);
@@ -71,6 +69,7 @@ function App() {
             <Route path="history" element={<History />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="notification" element={<Notification />} />
           </Route>
 
           <Route path="/signin" element={<Signin />} />

@@ -26,7 +26,7 @@ function TaskCard(props) {
     const taskProgress = calculateTaskProgress(task);
     setProgress(taskProgress);
 
-    getOwner();
+    // getOwner();
   }, []);
 
   return addSubtask ? (
@@ -63,7 +63,7 @@ function TaskCard(props) {
         </div>
         <img
           className="w-8 h-8 rounded-full dark:bg-white"
-          src={taskOwner?.img || profileImg}
+          src={user.img || profileImg}
           alt="profile"
         />
       </div>
@@ -79,27 +79,21 @@ function TaskCard(props) {
               return (
                 <li key={index} className="py-3 h-1/5 dark:text-white sm:py-4">
                   <div className=" h-full flex items-start">
-                    <div className="flex-1 h-full min-w-0 w-2/5 ms-4">
+                    <div className="flex-1 h-full min-w-0 w-2/5">
                       <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {sub.title}
                       </p>
-                      <div className="flex  flex-row items-center justify-between">
-                        <div className="w-2/5 h-2 mt-0.5 dark:bg-white  bg-gray-200 rounded-full ">
-                          <div
-                            className=" h-full bg-custom-yellow text-blue-100 text-center text-sm leading-none rounded-full"
-                            style={{ width: "45%" }}
-                          ></div>
-                        </div>
-                        <div className="text-sm dark:text-white px-2 w-3/5">
-                          25%
-                        </div>
-                      </div>
                     </div>
-                    <div className="w-2/5 h-full">DeadLine</div>
-                    <div className="flex-shrink-0 h-full w-1/5">
+                    <div className="w-2/5 h-full">{sub.deadline}</div>
+                    <div className="flex-shrink-0 h-full w-1/5 cursor-pointer">
                       <CiViewList
                         onClick={() => {
-                          setShowmodal(true);
+                          console.log("sub: ", sub);
+                          setShowmodal({
+                            visible: true,
+                            data: sub,
+                            parent: task._id,
+                          });
                         }}
                         className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 h-8 w-8"
                       />

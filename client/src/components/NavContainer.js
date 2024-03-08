@@ -13,6 +13,7 @@ import { IoMdLogOut } from "react-icons/io";
 import Loader from "./Loader";
 import { clearLocalStorage, getUser, showToast } from "../helpers";
 import profileImg from "../assets/profile.png";
+import { IoNotificationsCircle } from "react-icons/io5";
 import { FaWindowClose } from "react-icons/fa";
 
 function TopNav() {
@@ -93,7 +94,9 @@ function TopNav() {
                             </span>
                             <span className="flex flex-col items-start">
                               <span>{user.username}</span>
-                              <span className="text-xs font-base text-gray-400">{user.name}</span>
+                              <span className="text-xs font-base text-gray-400">
+                                {user.name}
+                              </span>
                             </span>
                           </button>
                         </div>
@@ -267,7 +270,12 @@ function SideNav() {
       icon: <MdHistoryToggleOff size={25} />,
     },
     {
-      name: "Settings",
+      name: "Notification",
+      url: "/notification",
+      icon: <IoNotificationsCircle size={25} />,
+    },
+    {
+      name: "Setting",
       url: "/settings",
       icon: <IoSettingsSharp size={25} />,
     },

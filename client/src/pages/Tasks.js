@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 function Tasks() {
   const [showmodal, setShowmodal] = useState({
     visible: false,
-    data: [],
+    data: null,
   });
   const userDetails = useSelector((store) => store.userDetails);
 
@@ -22,12 +22,16 @@ function Tasks() {
           })}
 
           {/* Colab tasks */}
-          {userDetails.collabtasks.map((task, index) => {
+          {/* {userDetails.collabtasks.map((task, index) => {
             return <TaskCard setShowmodal={setShowmodal} task={task} key={index}/>;
-          })}
+          })} */}
         </div>
       ) : (
-        <div>No tasks for today.</div>
+        <div className="flex justify-center items-center h-full w-full">
+          <p className="text-lg font-semibold">
+          No tasks for today.
+          </p>
+        </div>
       )}
     </div>
   );

@@ -68,8 +68,7 @@ function Addtask(props) {
             authToken: user.authToken,
           },
           data: {
-            title: task.title,
-            desc: task.desc,
+            ...task,
             taskId: props.task._id,
           },
         })
@@ -137,24 +136,23 @@ function Addtask(props) {
                     placeholder="About Task..."
                   ></textarea>
                   {/* deadline */}
-                  {!props.subtask && (
-                    <>
-                      <label
-                        for="date"
-                        className="block text-sm font-medium text-gray-700 my-2"
-                      >
-                        Select a Deadline:
-                      </label>
-                      <input
-                        type="date"
-                        id="date"
-                        name="deadline"
-                        min={minDeadline}
-                        onChange={(e) => handleChange(e)}
-                        className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </>
-                  )}
+
+                  <>
+                    <label
+                      for="date"
+                      className="block text-sm font-medium text-gray-700 my-2"
+                    >
+                      Select a Deadline:
+                    </label>
+                    <input
+                      type="date"
+                      id="date"
+                      name="deadline"
+                      min={minDeadline}
+                      onChange={(e) => handleChange(e)}
+                      className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </>
                 </form>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">

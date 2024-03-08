@@ -149,7 +149,27 @@ export const getUserById = (userId, authToken) => {
       reject(error.response.data.error.message);
     }
   });
-}
+};
+
+export const getMultipleUsersById = (userIds, authToken) => {
+  if (!authToken || userIds.length <= 0) return;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `${process.env.REACT_APP_HOST}/api/collab/all`,
+        headers: {
+          authToken: authToken,
+        },
+        data: { users: userIds },
+      });
+
+      resolve(response.data.data.users);
+    } catch (error) {
+      reject(error.response.data.error.message);
+    }
+  });
+};
 
 export const calculateTaskProgress = (task) => {
   let totalSubTasks = 0;
@@ -172,7 +192,8 @@ export const calculateTaskProgress = (task) => {
   }
 
   // Calculate progress percentage
-  const progress = totalSubTasks > 0 ? (completedSubTasks / totalSubTasks) * 100 : 0;
+  const progress =
+    totalSubTasks > 0 ? (completedSubTasks / totalSubTasks) * 100 : 0;
 
   return progress;
 };
@@ -217,7 +238,9 @@ export function useUpdate(props) {
           },
         });
 
-        const filteredTasks = res.data.data.tasks.filter(task => !task.isSubTask);
+        const filteredTasks = res.data.data.tasks.filter(
+          (task) => !task.isSubTask
+        );
 
         dispatch(
           updateUserDetails({
