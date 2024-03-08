@@ -15,6 +15,9 @@ const io = socketIo(server, {
   },
 });
 
+// Export the io instance
+module.exports = io;
+
 app.use(express.json());
 app.use(cors());
 // connecting database
@@ -53,11 +56,21 @@ io.on("connection", (socket) => {
     console.log("users: ", userSockets);
     console.log(`Socket connected for user ${data.userId}`);
   });
+
+  // Handle notification acceptance
+  // socket.on('acceptNotification', (notificationId, userId) => {
+  //   // Update data in the database
+  //   // Emit notification acceptance to sender
+  //   const socketId = Object.keys(userSockets).find(key => userSockets[key] === value);
+  //   if (socketId) {
+  //     io.to(socketId).emit('notificationAccepted', notificationId);
+  //   } else {
+  //     console.log(`Socket ID not found for user ${userId}`);
+  //   }
+  // });
 });
 
 // Start the server
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-module.exports = io;

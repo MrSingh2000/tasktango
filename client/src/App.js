@@ -11,7 +11,7 @@ import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
 import Invitations from "./pages/Invitations";
 import { useDispatch, useSelector } from "react-redux";
-import { getLocalStorage, useUpdate } from "./helpers";
+import { getLocalStorage, showToast, useUpdate } from "./helpers";
 import { updateUserState } from "./redux/reducers/userSlice";
 import { useEffect } from "react";
 import io from "socket.io-client";
@@ -19,6 +19,7 @@ import Notification from "./pages/Notification";
 import Assigned from "./pages/Assigned";
 
 function App() {
+  const [getUserNtasksUpdate] = useUpdate();
   const socket = io(`${process.env.REACT_APP_HOST}`);
 
   // Listening for events from the server
@@ -26,7 +27,17 @@ function App() {
     console.log("profile updated");
   });
 
-  const [getUserNtasksUpdate] = useUpdate();
+  socket.on("notification", (notificationData) => {
+    // Display notification to user
+    console.log("noti: ", notificationData);
+    getUserNtasksUpdate(false);
+    showToast("Task accepted");
+  });
+
+  // Listen for notification acceptance from sender
+  socket.on("notificationAccepted", (notificationId) => {
+    console.log("ui is being updated");
+  });
 
   useEffect(() => {
     return () => {
@@ -71,7 +82,10 @@ function App() {
             <Route path="history" element={<History />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="notification" element={<Notification />} />
+            <Route
+              path="notification"
+              element={<Notification socket={socket} />}
+            />
             <Route path="assigned" element={<Assigned />} />
           </Route>
 

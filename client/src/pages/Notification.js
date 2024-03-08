@@ -6,7 +6,7 @@ import axios from "axios";
 import { updateUserDetails } from "../redux/reducers/userDetailsSlice";
 
 function ListItem(props) {
-  const { invitation } = props;
+  const { invitation, socket } = props;
   const invitationDate = new Date(Number(invitation.date));
   const [getUserNtasksUpdate] = useUpdate();
   const user = useSelector((store) => store.user);
@@ -47,9 +47,11 @@ function ListItem(props) {
         },
         data: {
           collabId: invitation._id,
-          taskId: invitation.task
+          taskId: invitation.task,
         },
       });
+      socket.emit("acceptNotification", "I accepted");
+
       await getUserNtasksUpdate();
       showToast("Task accepted.", "success");
     } catch (error) {
@@ -167,7 +169,13 @@ function Notification(props) {
                   </thead>
                   <tbody>
                     {userDetails.invitationid.map((invitation, index) => {
-                      return <ListItem key={index} invitation={invitation} />;
+                      return (
+                        <ListItem
+                          key={index}
+                          socket={props.socket}
+                          invitation={invitation}
+                        />
+                      );
                     })}
                   </tbody>
                 </table>
