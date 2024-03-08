@@ -7,6 +7,8 @@ import { RiTodoLine } from "react-icons/ri";
 import { MdHistoryToggleOff } from "react-icons/md";
 import { IoNotifications, IoSettingsSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
+import { MdOutlineAssignmentTurnedIn } from "react-icons/md";
+
 import { IoMdCloseCircle } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { IoMdLogOut } from "react-icons/io";
@@ -233,13 +235,18 @@ function TopNav() {
                 setShowSideBar(false);
               }}
               className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/assigned"
+            >
+              Assigned
+            </Link>
+            <Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
               to="/settings"
             >
               Settings
-            </Link>
-            
-            
-            <Link onClick={() => {
+            </Link><Link onClick={() => {
                 setShowSideBar(false);
               }}
               className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
@@ -277,6 +284,11 @@ function SideNav() {
       name: "History",
       url: "/history",
       icon: <MdHistoryToggleOff size={25} />,
+    },
+    {
+      name: "Assigned",
+      url: "/assigned",
+      icon: <MdOutlineAssignmentTurnedIn size={25} />,
     },
     {
       name: "Notification",

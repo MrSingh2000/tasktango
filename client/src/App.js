@@ -16,6 +16,7 @@ import { updateUserState } from "./redux/reducers/userSlice";
 import { useEffect } from "react";
 import io from "socket.io-client";
 import Notification from "./pages/Notification";
+import Assigned from "./pages/Assigned";
 
 function App() {
   const socket = io(`${process.env.REACT_APP_HOST}`);
@@ -71,6 +72,7 @@ function App() {
             <Route path="tasks" element={<Tasks />} />
             <Route path="settings" element={<Settings />} />
             <Route path="notification" element={<Notification />} />
+            <Route path="assigned" element={<Assigned />} />
           </Route>
 
           <Route path="/signin" element={<Signin />} />

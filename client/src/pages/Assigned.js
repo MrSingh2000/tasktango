@@ -12,11 +12,12 @@ function Assigned (){
     const user = useSelector((store)=>store.user);
     const [tasks,setTasks] = useState([]);
     useEffect(()=>{
+            console.log(userDetails.collabtasks)
             const getData = async () => {
                 let templist = [];
                 await Promise.all(
                     
-                    userDetails.tasks.map(async (task) => {
+                    userDetails.collabtasks.map(async (task) => {
                         const owner = await getUserById(task.owner, user.authToken);
                         templist.push({ task: task, ownerName: owner?.name, ownerImg: owner?.img });
                     }),
