@@ -67,7 +67,7 @@ function TopNav() {
             <div className="flex flex-row lg:justify-between lg:w-fit w-full justify-between items-center">
               <div className="flex items-center lg:ml-6 justify-between lg:justify-start w-full">
                 {/* search bar */}
-                <div className="relative inline-block text-left space-x-4">
+                {/* <div className="relative inline-block text-left space-x-4">
                   <div className="flex relative flex-row-reverse">
                     <span className="rounded-r-lg inline-flex  items-center px-3 border-t bg-white border-r border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                       <CiSearch size={25} />
@@ -108,7 +108,7 @@ function TopNav() {
                       );
                     })}
                   </div>
-                </div>
+                </div> */}
                 <div className="relative hidden lg:flex gap-2 ml-2">
                   {/* user profile button */}
                   <div className="relative inline-block text-left">

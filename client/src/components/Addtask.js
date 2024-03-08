@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateLoading } from "../redux/reducers/loadingSlice";
@@ -11,6 +11,10 @@ function Addtask(props) {
   const [getUserNtasksUpdate] = useUpdate();
 
   const [task, setTask] = useState({ title: "", desc: "", deadline: "" });
+  const [dates, setDates] = useState({
+    today: new Date(),
+    minDeadline: new Date().toISOString().split("T")[0],
+  });
   const user = useSelector((store) => store.user);
   const handleChange = (e) => {
     setTask((prev) => {
@@ -18,10 +22,14 @@ function Addtask(props) {
     });
   };
 
-  //   minimum deadline date
-  let today = new Date();
-  let minDeadline = new Date(today.getDate() + 1);
-  minDeadline = minDeadline.toISOString().split("T")[0];
+  useEffect(() => {
+    //   minimum deadline date
+    // Update minDeadline state to prevent selection of past dates
+    setDates((prevDates) => ({
+      ...prevDates,
+      minDeadline: new Date().toISOString().split("T")[0],
+    }));
+  }, []);
 
   const isDeadlineValid = () => {
     if (!task.deadline) return false;
@@ -112,12 +120,13 @@ function Addtask(props) {
                     className="flex justify-between my-2 text-sm font-medium text-gray-900 dark:text-white "
                   >
                     <span>Title</span>
-                    <span>{today.toLocaleDateString()}</span>
+                    <span>{dates?.today?.toLocaleDateString()}</span>
                   </label>
                   <input
                     name="title"
                     type="text"
                     id="email"
+                    maxLength={24}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -154,7 +163,8 @@ function Addtask(props) {
                       type="date"
                       id="date"
                       name="deadline"
-                      min={minDeadline}
+                      min={dates?.minDeadline}
+                      max={props.subtask ? props.task.deadline : ""}
                       onChange={(e) => handleChange(e)}
                       className="block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />

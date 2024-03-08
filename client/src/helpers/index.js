@@ -198,6 +198,23 @@ export const calculateTaskProgress = (task) => {
   return progress;
 };
 
+export const deleteParentTask = (taskId, authToken) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios({
+        url: `${process.env.REACT_APP_HOST}/api/task/delete/${taskId}`,
+        method: "DELETE",
+        headers: {
+          authToken,
+        },
+      });
+      resolve();
+    } catch (error) {
+      reject(error.response.data.error.message);
+    }
+  });
+};
+
 // function to get all details of user and respective task documents
 export function useUpdate(props) {
   const dispatch = useDispatch();

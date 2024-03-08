@@ -3,8 +3,15 @@ import profileImg from "../assets/profile.png";
 import { CiViewList } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { IoMdAddCircle } from "react-icons/io";
-import { calculateTaskProgress, getUserById, showToast } from "../helpers";
+import {
+  calculateTaskProgress,
+  deleteParentTask,
+  getUserById,
+  showToast,
+  useUpdate,
+} from "../helpers";
 import Addtask from "./Addtask";
+import { MdDeleteForever } from "react-icons/md";
 
 
 
@@ -16,7 +23,7 @@ function TaskCard(props) {
   const [progress, setProgress] = useState(0);
   const [addSubtask, setAddSubtask] = useState(false);
 
-
+  const [getUserNtasksUpdate] = useUpdate();
 
   useEffect(() => {
     const getOwner = async () => {
@@ -44,20 +51,30 @@ function TaskCard(props) {
   ) : (
     <div className="w-full p-4 m-3 bg-white border border-gray-200 h-96 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 ">
       <div className="flex items-center justify-between mb-4">
-        <div className="relative inline-block">
-          <div class="w-full bg-gray-200 rounded-full">
-            <div
-              class="bg-green-500 rounded-full text-xs leading-none text-center text-white"
-              style={{ width: `${progress > 10 ? `${progress}%` : "10%"}` }}
-            >
-              {progress}%
+        <div className="relative inline-block w-full">
+          <div className="flex justify-between items-center w-full gap-3">
+            <div class="w-full bg-gray-200 rounded-full">
+              <div
+                class="bg-green-500 rounded-full text-xs leading-none text-center text-white"
+                style={{ width: `${progress > 10 ? `${progress}%` : "10%"}` }}
+              >
+                {progress}%
+              </div>
             </div>
+            <MdDeleteForever
+              onClick={() => {
+                deleteParentTask(task._id, user.authToken);
+                getUserNtasksUpdate();
+              }}
+              size={35}
+              className="text-red-400 cursor-pointer hover:text-white hover:bg-red-400 p-1 rounded-full left-10 bottom-4 relative"
+            />
           </div>
 
           <h5  className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             {task.title}
           </h5>
-          <div className="max-h-4rem overflow-y-auto bg-gray-200 rounded-lg p-2 my-2 mr-2">
+          <div className="max-h-[4rem] overflow-y-auto max-w-full bg-gray-200 rounded-lg p-2 my-2 mr-2">
             {task.desc}
           </div>
           <IoMdAddCircle
