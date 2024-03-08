@@ -5,7 +5,10 @@ function isOwner(task, user) {
 
 // checks if the user is in collaboration list
 function isCollab(task, user) {
-  return task.collab.includes(user);
+  console.log("users: ", user);
+  if (user._id) return task.collab.includes(user._id);
+
+  return task.collab.includes(user || user._id);
 }
 
 module.exports = { isOwner, isCollab };

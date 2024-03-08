@@ -146,22 +146,6 @@ router.get("/get/:id", fetchUser, async (req, res) => {
   }
 });
 
-// emit event to the collabs and owner
-function emitEvent(task, userId) {
-  if (!userSockets || !io) return;
-  // Emit event to collaborators and owner
-  const collaboratorsAndOwnerIds = [...task.collab, task.owner];
-  collaboratorsAndOwnerIds.forEach((collabOrOwnerId) => {
-    // Find the socket associated with each user ID and emit the event
-    const socketId = Object.keys(userSockets).find(
-      (key) => userSockets[key] === collabOrOwnerId
-    );
-    if (socketId && socketId !== userId) {
-      io.to(socketId).emit("task_updated", { task });
-    }
-  });
-}
-
 // ROUTE 4: update task
 router.put("/create", fetchUser, async (req, res) => {
   try {
@@ -220,7 +204,12 @@ router.put("/create", fetchUser, async (req, res) => {
         },
       });
     }
-    emitEvent(updatedTask, userId);
+
+    const socketId = Object.keys(userSockets.userSockets).find(
+      (key) => userSockets.userSockets[key] === task.owner.toString()
+    );
+    io.to(socketId).emit("updateTask", "Task Updated");
+
     res.status(200).json({
       data: {
         task: updatedTask,
