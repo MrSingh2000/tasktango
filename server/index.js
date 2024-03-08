@@ -57,6 +57,15 @@ io.on("connection", (socket) => {
     console.log(`Socket connected for user ${data.userId}`);
   });
 
+  socket.on("invitesent", (data) => {
+      const socketId = Object.keys(userSockets).find(key => userSockets[key] === value);
+      if (socketId) {
+        io.to(socketId).emit('invitesent', "heelo");
+      } else {
+        console.log(`Socket ID not found for user ${userId}`);
+      }
+  });
+
   // Handle notification acceptance
   // socket.on('acceptNotification', (notificationId, userId) => {
   //   // Update data in the database

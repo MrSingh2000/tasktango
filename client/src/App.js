@@ -32,6 +32,12 @@ function App() {
     showToast("Task accepted");
   });
 
+  socket.on("invitesent", (notificationData) => {
+    // Display notification to user
+    getUserNtasksUpdate(false);
+    showToast("New collaborator.");
+  });
+
   // Listen for notification acceptance from sender
   socket.on("notificationAccepted", (notificationId) => {
     console.log("ui is being updated");
@@ -78,7 +84,7 @@ function App() {
           <Route path="/" element={<NavContainer />}>
             <Route path="" element={<DashBoard />} />
             <Route path="history" element={<History />} />
-            <Route path="tasks" element={<Tasks />} />
+            <Route path="tasks" element={<Tasks socket={socket} />} />
             <Route path="settings" element={<Settings />} />
             <Route
               path="notification"

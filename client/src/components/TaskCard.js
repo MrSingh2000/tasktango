@@ -14,7 +14,7 @@ import Addtask from "./Addtask";
 import { MdDeleteForever } from "react-icons/md";
 
 function TaskCard(props) {
-  const { setShowmodal, task } = props;
+  const { setShowmodal, task, socket } = props;
   const user = useSelector((store) => store.user);
   const [taskOwner, setTaskOwner] = useState(null);
   const [progress, setProgress] = useState(0);
