@@ -52,7 +52,7 @@ function TaskCard(props) {
           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             {task.title}
           </h5>
-          <div className="max-h-4rem overflow-y-auto bg-gray-200 rounded-lg p-2 my-2 mr-2">
+          <div className="max-h-[4rem] overflow-y-auto max-w-full bg-gray-200 rounded-lg p-2 my-2 mr-2">
             {task.desc}
           </div>
           <IoMdAddCircle

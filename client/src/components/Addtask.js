@@ -120,6 +120,7 @@ function Addtask(props) {
                     name="title"
                     type="text"
                     id="email"
+                    maxLength={24}
                     onChange={(e) => {
                       handleChange(e);
                     }}
