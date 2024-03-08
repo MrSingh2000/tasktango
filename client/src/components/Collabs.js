@@ -28,7 +28,7 @@ function Collabs(props) {
         },
         data: {
           collabId: collabUser._id,
-          taskId: showmodal.data._id
+          taskId: showmodal.data._id,
         },
       });
       dispatch(updateLoading(false));
@@ -98,7 +98,10 @@ function Collabs(props) {
             className="rounded-lg border-transparent appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 h-fit focus:ring-custom-yellow focus:border-transparent"
             placeholder="Add collab. by username/email"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              if (e.target.value === "") setSearchResults([]);
+            }}
           />
           <div
             onClick={handleSendInvitation}

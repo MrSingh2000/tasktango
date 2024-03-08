@@ -148,7 +148,14 @@ router.put("/create", fetchUser, async (req, res) => {
       });
     }
 
-    const { title, desc, updateType, status, taskId, parentId } = req.body;
+    const { title, desc, updateType, status, taskId } = req.body;
+
+    // Find the parent task that contains the subtask
+    const parentId = await Task.findOne({ "subTask._id": taskId });
+
+    if (!parentId) {
+      throw new Error("Parent task not found");
+    }
 
     // old subtask
     const oldsubtask = await Task.findById(taskId);
