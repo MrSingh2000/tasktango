@@ -7,6 +7,8 @@ const fetchUser = require("../../middlewares/fetchUser");
 const UserData = require("../../models/user/UserData");
 const { isOwner } = require("../../functions");
 const Task = require("../../models/task/Task");
+const io = require("../..");
+const { userSockets } = require("../../common");
 require("dotenv").config();
 
 // ROUTE 1: add user to collab list
@@ -77,7 +79,9 @@ router.post("/add", fetchUser, async (req, res) => {
     }
 
     // Find the subtask within the parent task
-    const subtask = parentTask.subTask.find(subtask => subtask._id.equals(taskId));
+    const subtask = parentTask.subTask.find((subtask) =>
+      subtask._id.equals(taskId)
+    );
 
     if (!subtask) {
       throw new Error("Subtask not found in parent task");
@@ -88,6 +92,12 @@ router.post("/add", fetchUser, async (req, res) => {
 
     // Save the parent task to persist the changes
     await parentTask.save();
+
+    // Send notification to recipient
+    const socketId = Object.keys(userSockets).find(
+      (key) => userSockets[key] === parentTask.owner.toString()
+    );
+    io.to(socketId).emit("notification", "Notification accepted");
 
     res.status(200).json({
       data: {
@@ -140,7 +150,7 @@ router.post("/notify", fetchUser, async (req, res) => {
     const invitation = {
       from: userId,
       task: taskId,
-      status: false
+      status: false,
     };
 
     const updatedUser = await UserData.findOneAndUpdate(
@@ -180,10 +190,8 @@ router.post("/all", fetchUser, async (req, res) => {
       });
     }
 
-    console.log("here");
-
     const userArray = req.body.users;
-    console.log('usersArray: ', userArray)
+    console.log("usersArray: ", userArray);
     const users = await User.find({ _id: { $in: userArray } });
 
     console.log("users: ", users);

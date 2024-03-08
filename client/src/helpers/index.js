@@ -203,9 +203,9 @@ export function useUpdate(props) {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
-  const getUserNtasksUpdate = async () => {
+  const getUserNtasksUpdate = async (loading = true) => {
     if (user) {
-      dispatch(updateLoading(true));
+      loading && dispatch(updateLoading(true));
       try {
         const response = await axios({
           url: `${process.env.REACT_APP_HOST}/api/profile/mydetails`,
@@ -249,11 +249,11 @@ export function useUpdate(props) {
             invitations: res.data.data.invites,
           })
         );
-        dispatch(updateLoading(false));
+        loading && dispatch(updateLoading(false));
       } catch (error) {
         console.log(error);
         showToast(error.response.data.error.message, "error");
-        dispatch(updateLoading(false));
+        loading && dispatch(updateLoading(false));
       }
     }
   };
