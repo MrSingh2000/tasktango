@@ -281,11 +281,6 @@ function SideNav() {
       icon: <RiTodoLine size={25} />,
     },
     {
-      name: "History",
-      url: "/history",
-      icon: <MdHistoryToggleOff size={25} />,
-    },
-    {
       name: "Assigned",
       url: "/assigned",
       icon: <MdOutlineAssignmentTurnedIn size={25} />,
