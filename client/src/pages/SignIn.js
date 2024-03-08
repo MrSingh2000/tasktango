@@ -126,7 +126,7 @@ export const Signin = () => {
                     </h3>
                   </div>
                   <div className="mt-4 text-base text-gray-500">
-                    <p>Sign up and get our newest news.</p>
+                    <p>Sign up and Collaborate.</p>
                   </div>
                 </div>
               </div>
