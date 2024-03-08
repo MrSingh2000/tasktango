@@ -8,7 +8,7 @@ import axios from "axios";
 import { updateLoading } from "../redux/reducers/loadingSlice";
 
 function Collabs(props) {
-  const { showmodal, setShowmodal } = props;
+  const { showmodal, setShowmodal, socket } = props;
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [collabData, setCollabData] = useState([]);
@@ -33,6 +33,7 @@ function Collabs(props) {
       });
       dispatch(updateLoading(false));
       showToast("Collaboration request sent.", "success");
+      socket.emit("invitesent");
     } catch (error) {
       dispatch(updateLoading(false));
       showToast(error.response.data.error.message, "error");

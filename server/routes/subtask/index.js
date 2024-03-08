@@ -150,6 +150,7 @@ router.put("/create", fetchUser, async (req, res) => {
 
     const { title, desc, updateType, status, taskId } = req.body;
 
+    console.log("taskId", taskId);
     // Find the parent task that contains the subtask
     const parentId = await Task.findOne({ "subTask._id": taskId });
 
