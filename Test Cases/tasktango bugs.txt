@@ -1,0 +1,10 @@
+How to delete/cut a completed task
+At sign-up, if an already used username is attempted, it should display a defined error message. 
+sign in page text update
+The search bar dropdown and profile dropdown should close when clicking anywhere on the screen.
+site get crashed if a task or subtask is added with a missing field.
+a subtask should not have a completion date after the completion date of the task
+title should have a limit of 23 characters 
+description should have a limit
+notification should appear on the reciever side after sending a request
+
