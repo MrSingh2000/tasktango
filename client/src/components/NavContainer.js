@@ -1,20 +1,25 @@
 import React from "react";
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { RiTodoLine } from "react-icons/ri";
 import { MdHistoryToggleOff } from "react-icons/md";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoNotifications, IoSettingsSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
+import { MdOutlineAssignmentTurnedIn } from "react-icons/md";
+
 import { IoMdCloseCircle } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { IoMdLogOut } from "react-icons/io";
+import { IoIosNotifications } from "react-icons/io";
 import Loader from "./Loader";
 import { clearLocalStorage, getUser, showToast } from "../helpers";
 import profileImg from "../assets/profile.png";
 import { IoNotificationsCircle } from "react-icons/io5";
 import { FaWindowClose } from "react-icons/fa";
+import { FaListUl } from "react-icons/fa";
+
 
 function TopNav() {
   const [userProfileClicked, setUserProfileClicked] = useState(false);
@@ -195,7 +200,7 @@ function TopNav() {
           id="sidebar"
           className="h-full lg:hidden w-full absolute flex justify-center  backdrop-blur-sm items-center z-20"
         >
-          <div className="rounded-xl bg-white dark:bg-gray-800 shadow-lg px-2 pt-2 pb-3 h-[90vh] w-[90vw] space-y-1 sm:px-3 flex flex-col items-center justify-between overflow-auto">
+          <div className="rounded-xl bg-white dark:bg-gray-800 shadow-lg px-2 pt-2 pb-3 h-[90vh] w-[90vw] space-y-1 sm:px-3 flex flex-col items-center  justify-between overflow-auto">
             <div className="sticky -top-2 z-50 bg-custom-yellow flex justify-between dark:bg-gray-800 w-full p-4 rounded-xl">
               <p>LOGO</p>
               <FaWindowClose
@@ -204,42 +209,53 @@ function TopNav() {
                 className="text-white hover:text-red-600"
               />
             </div>
-            <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              href="/#"
+            <Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/"
             >
               Dashboard
-            </a>
-            <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              href="/#"
-            >
-              Create+
-            </a>
-            <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              href="/#"
+            </Link>
+            <Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/Tasks"
             >
               Tasks
-            </a>
-            <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              href="/#"
+            </Link><Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/history"
             >
               History
-            </a>
-            <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              href="/#"
+            </Link><Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/assigned"
+            >
+              Assigned
+            </Link>
+            <Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/settings"
             >
               Settings
-            </a>
-            <a
-              className="text-gray-800 hover:text-[#FABB18] dark:hover:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              href="/#"
+            </Link><Link onClick={() => {
+                setShowSideBar(false);
+              }}
+              className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
+              to="/signin"
             >
-              Log out
-            </a>
+              Log Out
+            </Link>
+            
+            
             <IoMdCloseCircle
               onClick={() => {
                 setShowSideBar(false);
@@ -270,6 +286,11 @@ function SideNav() {
       icon: <MdHistoryToggleOff size={25} />,
     },
     {
+      name: "Assigned",
+      url: "/assigned",
+      icon: <MdOutlineAssignmentTurnedIn size={25} />,
+    },
+    {
       name: "Notification",
       url: "/notification",
       icon: <IoNotificationsCircle size={25} />,
@@ -279,6 +300,7 @@ function SideNav() {
       url: "/settings",
       icon: <IoSettingsSharp size={25} />,
     },
+    
   ];
 
   return (

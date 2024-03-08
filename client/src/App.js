@@ -9,12 +9,14 @@ import History from "./pages/History";
 import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
+import Invitations from "./pages/Invitations";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorage, showToast, useUpdate } from "./helpers";
 import { updateUserState } from "./redux/reducers/userSlice";
 import { useEffect } from "react";
 import io from "socket.io-client";
 import Notification from "./pages/Notification";
+import Assigned from "./pages/Assigned";
 
 function App() {
   const [getUserNtasksUpdate] = useUpdate();
@@ -84,6 +86,7 @@ function App() {
               path="notification"
               element={<Notification socket={socket} />}
             />
+            <Route path="assigned" element={<Assigned />} />
           </Route>
 
           <Route path="/signin" element={<Signin />} />
