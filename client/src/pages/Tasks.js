@@ -20,11 +20,6 @@ function Tasks() {
           {userDetails.tasks.map((task, index) => {
             return <TaskCard setShowmodal={setShowmodal} task={task} key={index}/>;
           })}
-
-          {/* Colab tasks */}
-          {/* {userDetails.collabtasks.map((task, index) => {
-            return <TaskCard setShowmodal={setShowmodal} task={task} key={index}/>;
-          })} */}
         </div>
       ) : (
         <div className="flex justify-center items-center h-full w-full">
