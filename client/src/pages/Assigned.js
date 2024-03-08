@@ -55,8 +55,8 @@ function Assigned() {
   }, []);
 
   return (
-    <div className=" w-100vw h-[calc(100vh-4rem)]">
-      <div className="w-5/6 ml-auto mr-auto max-h-[calc(100vh-4rem)] overflow-y-scroll  p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-100vw h-[calc(100vh-4rem)]">
+      <div className="w-5/6 mt-4 ml-auto mr-auto max-h-[calc(100vh-4rem)] overflow-y-scroll  p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div className="flow-root divide-y divide-gray-200 dark:divide-gray-100">
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
             <div className="py-3 sm:py-4">
