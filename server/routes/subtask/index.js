@@ -41,7 +41,6 @@ router.post("/create", fetchUser, async (req, res) => {
 
     const task = response.data.data.task;
 
-    console.log("task: ", task);
     let parentTask;
     try {
       parentTask = await Task.findByIdAndUpdate(
@@ -56,7 +55,6 @@ router.post("/create", fetchUser, async (req, res) => {
     } catch (error) {
       console.log("here error: ", error);
     }
-    console.log("parentTask");
 
     res.status(200).json({
       data: {
@@ -149,8 +147,6 @@ router.put("/create", fetchUser, async (req, res) => {
     }
 
     const { title, desc, updateType, status, taskId } = req.body;
-
-    console.log("taskId", taskId);
     // Find the parent task that contains the subtask
     const parentId = await Task.findOne({ "subTask._id": taskId });
 
@@ -163,20 +159,31 @@ router.put("/create", fetchUser, async (req, res) => {
 
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     // Make a request to the relative URL /data
-    const response = await axios({
-      url: `${baseUrl}/api/task/create`,
-      method: "PUT",
-      headers: {
-        authToken: req.header("authToken"),
-      },
-      data: {
-        title,
-        desc,
-        updateType,
-        status,
-        taskId,
-      },
-    });
+    let response;
+    try {
+      response = await axios({
+        url: `${baseUrl}/api/task/create`,
+        method: "PUT",
+        headers: {
+          authToken: req.header("authToken"),
+        },
+        data: {
+          title,
+          desc,
+          updateType,
+          status,
+          taskId,
+        },
+      });
+    } catch (error) {
+      console.log('err: ', error.response.data)
+      return res.status(500).json({
+        error: {
+          code: 500,
+          message: error,
+        },
+      });
+    }
 
     // updating the array as there is no query to automate it
     const oldParent = await Task.findById(parentId);

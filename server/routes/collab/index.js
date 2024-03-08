@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../../models/user/User");
 const fetchUser = require("../../middlewares/fetchUser");
 const UserData = require("../../models/user/UserData");
-const { isOwner } = require("../../functions");
 const Task = require("../../models/task/Task");
 const io = require("../..");
 const { userSockets } = require("../../common");
@@ -65,7 +62,7 @@ router.post("/add", fetchUser, async (req, res) => {
       taskId,
       {
         $push: {
-          collab: collabId,
+          collab: userId,
         },
       },
       { new: true }
@@ -164,6 +161,13 @@ router.post("/notify", fetchUser, async (req, res) => {
       { new: true }
     );
 
+    // Send notification to recipient
+    const socketId = Object.keys(userSockets).find(
+      (key) => userSockets[key] === collabId.toString()
+    );
+    io.to(socketId).emit("notificationSent", "Notification Sent");
+
+
     res.status(200).json({
       data: {
         user: updatedUser,
@@ -192,10 +196,8 @@ router.post("/all", fetchUser, async (req, res) => {
     }
 
     const userArray = req.body.users;
-    console.log("usersArray: ", userArray);
     const users = await User.find({ _id: { $in: userArray } });
 
-    console.log("users: ", users);
     res.json({
       data: {
         users: users.length > 0 ? users : [],

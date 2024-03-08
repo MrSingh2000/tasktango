@@ -31,7 +31,19 @@ function App() {
     // Display notification to user
     console.log("noti: ", notificationData);
     getUserNtasksUpdate(false);
-    showToast("Task accepted");
+    showToast("Task accepted.");
+  });
+
+  socket.on("notificationSent", (notificationData) => {
+    // Display notification to user
+    getUserNtasksUpdate(false);
+    showToast("New notifications.");
+  });
+
+  socket.on("updateTask", (notificationData) => {
+    // Display notification to user
+    console.log("noti 2: ", notificationData);
+    getUserNtasksUpdate(false);
   });
 
   socket.on("invitesent", (notificationData) => {

@@ -13,9 +13,6 @@ import {
 import Addtask from "./Addtask";
 import { MdDeleteForever } from "react-icons/md";
 
-
-
-
 function TaskCard(props) {
   const { setShowmodal, task, socket } = props;
   const user = useSelector((store) => store.user);
@@ -39,7 +36,7 @@ function TaskCard(props) {
     setProgress(taskProgress);
 
     // getOwner();
-  }, []);
+  }, [task]);
 
   return addSubtask ? (
     <Addtask
@@ -71,7 +68,7 @@ function TaskCard(props) {
             />
           </div>
 
-          <h5  className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+          <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
             {task.title}
           </h5>
           <div className="max-h-[4rem] overflow-y-auto max-w-full bg-gray-200 rounded-lg p-2 my-2 mr-2">
@@ -103,8 +100,8 @@ function TaskCard(props) {
                   <span class="absolute scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">{sub.desc}</span>
                   <div className=" h-full flex items-start">
                     <div className="flex-1 h-full min-w-0 w-2/5">
-                      <p   className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                      {sub.title}                        
+                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        {sub.title}
                       </p>
                     </div>
                     {/* <div class="group relative flex justify-center flex-1 h-full min-w-0 w-2/5">

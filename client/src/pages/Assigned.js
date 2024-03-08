@@ -4,19 +4,23 @@ import profileImg from "../assets/profile.png";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { getUserById, showToast } from "../helpers";
+import { getUserById, showToast, useUpdate } from "../helpers";
 import axios from "axios";
 import { updateLoading } from "../redux/reducers/loadingSlice";
+import { IoMdDoneAll } from "react-icons/io";
+import { MdOutlineCancel } from "react-icons/md";
+
 function Assigned() {
   const dispatch = useDispatch();
   const userDetails = useSelector((store) => store.userDetails);
   const user = useSelector((store) => store.user);
   const [tasks, setTasks] = useState([]);
+  const [getUserNtasksUpdate] = useUpdate();
 
-  const statusToCompleted = async (subId) => {
+  const statusToCompleted = async (subId, val) => {
     const data = {
       updateType: "status",
-      status: true,
+      status: val,
       taskId: subId,
     };
 
@@ -29,6 +33,7 @@ function Assigned() {
         },
         data,
       });
+      getUserNtasksUpdate();
     } catch (error) {
       showToast(error.message, "error");
     }
@@ -41,6 +46,7 @@ function Assigned() {
       await Promise.all(
         userDetails.collabtasks.map(async (task) => {
           const owner = await getUserById(task.owner, user.authToken);
+          console.log("Owner: ", owner);
           templist.push({
             task: task,
             ownerName: owner?.name,
@@ -85,12 +91,8 @@ function Assigned() {
         </div>
         {userDetails.collabtasks.length > 0 ? (
           <div className="flow-root">
-            <ul
-              className="divide-y divide-gray-200 dark:divide-gray-100"
-            >
+            <ul className="divide-y divide-gray-200 dark:divide-gray-100">
               {tasks.map((taskDetails, index) => {
-                console.log(taskDetails.task._id);
-
                 return (
                   <li className="py-3 sm:py-4" key={index}>
                     <div className="flex items-center">
@@ -106,30 +108,41 @@ function Assigned() {
                       </div>
                       <div className="flex-1 min-w-0 ms-4">
                         <p
-                          className={`"text-sm ${
+                          className={`text-sm ${
                             taskDetails.task.status
                               ? "text-green-300"
                               : "text-red-600"
-                          } font-medium truncate"`}
+                          } font-semibold truncate ml-2 mb-1`}
                         >
-                          {taskDetails.task.status ? "Completed" : "Pending"}
+                          {taskDetails.task.status ? "Done" : "Pending"}
                         </p>
                         <button
                           type="button"
+                          disabled={taskDetails.task.status}
                           onClick={() => {
-                            statusToCompleted(taskDetails.task._id);
+                            statusToCompleted(taskDetails.task._id, true);
                           }}
-                          class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-1 py-.5 dark:text-black me-2 mb-2 dark:focus:ring-yellow-900"
+                          className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-1 py-1 dark:text-black me-2 mb-2 dark:focus:ring-yellow-900"
                         >
-                          Mark As Done
+                          <IoMdDoneAll size={25} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={!taskDetails.task.status}
+                          onClick={() => {
+                            statusToCompleted(taskDetails.task._id, false);
+                          }}
+                          className="focus:outline-none text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-1 py-1 dark:text-black me-2 mb-2 dark:focus:ring-yellow-900"
+                        >
+                          <MdOutlineCancel size={25} />
                         </button>
                       </div>
-                      <div className="flex flex-row max-w-1/3">
+                      <div className="flex flex-col justify-center items-center max-w-1/3">
                         <div className="flex-shrink-0 mr-2">
                           <img
-                            src={taskDetails?.ownerImg}
+                            src={taskDetails?.ownerImg || profileImg}
                             className=" size-6 dark:bg-white rounded-full"
-                            alt="Neil image"
+                            alt="Neil"
                           />
                         </div>
                         <div className="inline-flex items-center text-sm font-medium text-gray-900 dark:text-white">
