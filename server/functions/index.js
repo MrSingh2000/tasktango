@@ -1,6 +1,5 @@
 // checks if the user is owner of task
 function isOwner(task, user) {
-  console.log(typeof task.owner, "\n", typeof user);
   return user.equals(task.owner);
 }
 

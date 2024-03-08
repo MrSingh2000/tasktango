@@ -18,7 +18,7 @@ router.post("/create", fetchUser, async (req, res) => {
       });
     }
 
-    const { taskId, title, desc } = req.body;
+    const { taskId, title, desc, deadline } = req.body;
 
     // create a new task with 'create' route
     // Construct the full URL including the protocol, hostname, and port
@@ -35,6 +35,7 @@ router.post("/create", fetchUser, async (req, res) => {
         title,
         desc,
         subTask: true,
+        deadline,
       },
     });
 
@@ -55,7 +56,7 @@ router.post("/create", fetchUser, async (req, res) => {
     } catch (error) {
       console.log("here error: ", error);
     }
-    console.log('parentTask')
+    console.log("parentTask");
 
     res.status(200).json({
       data: {

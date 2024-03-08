@@ -123,12 +123,12 @@ router.get("/get/:id", fetchUser, async (req, res) => {
     // checking if the user is in either collaboration list or the owner of the task
     // owner is never added to collab list
     if (!userId.equals(task.owner) && !task.collab.includes(userId))
-      return res.status(401).json({
-        error: {
-          code: 401,
-          message: "Unauthorized operation. 2",
+      return res.status(200).json({
+        data: {
+          title: task.title,
         },
       });
+    // for security only title will be sent
 
     res.status(200).json({
       data: {
@@ -237,6 +237,7 @@ router.put("/create", fetchUser, async (req, res) => {
   }
 });
 
+// ROUTE 5: get multiple tasks in one go
 router.post("/all", fetchUser, async (req, res) => {
   try {
     let userId = req.user.id;

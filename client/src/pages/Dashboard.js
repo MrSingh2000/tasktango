@@ -134,7 +134,7 @@ function Dashboard() {
             </li>
           </ul>
           <ul className="w-full text-left h-72 overflow-y-auto">
-            {stats.recent.map((item, index) => {
+            {stats.recent.length > 0 ? stats.recent.map((item, index) => {
               return (
                 <li
                   key={index}
@@ -150,7 +150,13 @@ function Dashboard() {
                   </div>
                 </li>
               );
-            })}
+            }) : (
+              <>
+              <div className="text-center p-12 text-custom-yellow text-sm">
+                No recent activity so far.
+              </div>
+              </>
+            )}
           </ul>
         </div>
         <div className="block px-6 py-2 md:w-2/5 w-4/5 text-left md:mt-0 font-medium  rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
@@ -164,7 +170,7 @@ function Dashboard() {
             </li>
           </ul>
           <ul className="w-full text-left h-72 overflow-y-auto">
-            {stats.deadlines.map((item, index) => {
+            {stats.deadlines.length > 0 ? stats.deadlines.map((item, index) => {
               return (
                 <li
                   key={index}
@@ -176,7 +182,13 @@ function Dashboard() {
                   </div>
                 </li>
               );
-            })}
+            }) : (
+              <>
+              <div className="text-center p-12 text-custom-yellow text-sm">
+                Great! All caught up.
+              </div>
+              </>
+            )}
           </ul>
         </div>
       </div>

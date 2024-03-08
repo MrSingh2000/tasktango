@@ -7,7 +7,6 @@ const fetchUser = require("../../middlewares/fetchUser");
 const UserData = require("../../models/user/UserData");
 require("dotenv").config();
 
-
 // Route 1: Route to login
 router.post("/login", async (req, res) => {
   try {
@@ -59,6 +58,24 @@ router.post("/register", async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const securePass = await bcrypt.hash(password, salt);
+
+    // check unique username and email
+    const usernameNotAvailable = await User.findOne({ username });
+    const emailNotAvailable = await User.findOne({ email });
+    if (usernameNotAvailable)
+      return res.status(401).json({
+        error: {
+          code: 401,
+          message: "Username not available.",
+        },
+      });
+    if (emailNotAvailable)
+      return res.status(401).json({
+        error: {
+          code: 401,
+          message: "Email already registered.",
+        },
+      });
 
     user = await User.create({
       username,
