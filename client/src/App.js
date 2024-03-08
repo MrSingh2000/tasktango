@@ -9,6 +9,7 @@ import History from "./pages/History";
 import Tasks from "./pages/Tasks";
 import Settings from "./pages/Settings";
 import DashBoard from "./pages/Dashboard";
+import Invitations from "./pages/Invitations";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorage, showToast, useUpdate } from "./helpers";
 import { updateUserState } from "./redux/reducers/userSlice";
@@ -73,6 +74,7 @@ function App() {
             <Route path="tasks" element={<Tasks />} />
             <Route path="settings" element={<Settings />} />
             <Route path="assigned" element = {<Assigned />} />
+            <Route path="/invitations" element ={<Invitations/>} />
           </Route>
 
           <Route path="/signin" element={<Signin />} />

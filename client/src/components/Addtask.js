@@ -35,10 +35,16 @@ function Addtask(props) {
     dispatch(updateLoading(true));
     if (task.title === "") {
       showToast("Title is Empty", "error");
+      dispatch(updateLoading(false));
     } else if (task.desc === "") {
       showToast("Task Description is Empty", "error");
+      dispatch(updateLoading(false));
+    } else if(task.deadline===""){
+      showToast("No Deadline Assigned", "error");
+      dispatch(updateLoading(false));
     } else if (!props.subtask & !isDeadlineValid) {
       showToast("Deadline must be in future.", "error");
+      dispatch(updateLoading(false));
     } else {
       if (!props.subtask)
         axios({

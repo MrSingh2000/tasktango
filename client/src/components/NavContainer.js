@@ -5,11 +5,12 @@ import { useLocation } from "react-router-dom";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { RiTodoLine } from "react-icons/ri";
 import { MdHistoryToggleOff } from "react-icons/md";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoNotifications, IoSettingsSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { IoMdCloseCircle } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { IoMdLogOut } from "react-icons/io";
+import { IoIosNotifications } from "react-icons/io";
 import Loader from "./Loader";
 import { clearLocalStorage, getUser, showToast } from "../helpers";
 import profileImg from "../assets/profile.png";
@@ -233,6 +234,8 @@ function TopNav() {
             >
               Settings
             </Link>
+            
+            
             <Link onClick={() => {
                 setShowSideBar(false);
               }}
@@ -241,14 +244,7 @@ function TopNav() {
             >
               Log Out
             </Link>
-            <Link onClick={() => {
-                setShowSideBar(false);
-              }}
-              className="text-gray-800 hover:text-[#FABB18] dark:text-white dark:hover:bg:white hover:bg-black block px-10 py-6 rounded-lg text-base font-medium "
-              to="/assigned"
-            >
-              Assigned
-            </Link>
+            
             
             <IoMdCloseCircle
               onClick={() => {
@@ -280,15 +276,17 @@ function SideNav() {
       icon: <MdHistoryToggleOff size={25} />,
     },
     {
+      name: "Assigned",
+      url: "/assigned",
+      icon: <FaListUl size={25} />
+    },
+    
+    {
       name: "Settings",
       url: "/settings",
       icon: <IoSettingsSharp size={25} />,
     },
-    {
-      name: "Assigned",
-      url: "/assigned",
-      icon: <FaListUl size={25} />
-    }
+    
   ];
 
   return (

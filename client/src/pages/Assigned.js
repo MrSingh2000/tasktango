@@ -10,14 +10,25 @@ function Assigned (){
     const dispatch = useDispatch();
     const userDetails = useSelector((store) => store.userDetails);
     const user = useSelector((store)=>store.user);
-    const [taskowner,setTaskowner] = useState(null);
-    const setowner = async(task)=>{
-        
-        const name = await getUserById(task.owner,user.authToken);
-        
-        setTaskowner(name);
-        
-    }
+    const [tasks,setTasks] = useState([]);
+    useEffect(()=>{
+            const getData = async () => {
+                let templist = [];
+                await Promise.all(
+                    
+                    userDetails.tasks.map(async (task) => {
+                        const owner = await getUserById(task.owner, user.authToken);
+                        templist.push({ task: task, ownerName: owner?.name, ownerImg: owner?.img });
+                    }),
+                    
+                );
+                setTasks(templist);
+                console.log(templist); 
+            };
+            getData();
+            
+    }, []);
+    
     
     
     return (
@@ -51,9 +62,9 @@ function Assigned (){
                 <div class="flow-root">
                         <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-100">
                             
-                            {userDetails.tasks.map((task, index) => {
+                            {tasks.map((taskDetails,index) => {
                                 
-                                setowner(task);
+                                
                                 
                                 return <li class="py-3 sm:py-4" key={index}>
                                     <div class="flex items-center">
@@ -61,20 +72,20 @@ function Assigned (){
                                         
                                         <div class="flex-1 min-w-0 ms-4">
                                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                {task.title}
+                                                {taskDetails.task.title}
                                             </p>
                                         </div>
                                         <div class="flex-1 min-w-0 ms-4">
                                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                {task.deadline}
+                                                {taskDetails.task.deadline}
                                             </p>
                                         </div>
                                         <div className="flex flex-row max-w-1/3">
                                             <div class="flex-shrink-0 mr-2">
-                                                <img src= {taskowner?.img?taskowner?.img:profileImg} class="w-6 h-6 dark:bg-white rounded-full"  alt="Neil image"/>
+                                                <img src= {taskDetails?.ownerImg} class=" size-6 dark:bg-white rounded-full"  alt="Neil image"/>
                                             </div>
                                             <div class="inline-flex items-center text-sm font-medium text-gray-900 dark:text-white">
-                                                {taskowner?.name}
+                                                {taskDetails?.ownerName}
                                             </div>
                                         </div>
                                         
