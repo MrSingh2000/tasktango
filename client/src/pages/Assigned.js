@@ -27,7 +27,7 @@ function Assigned (){
             url:`${process.env.REACT_APP_HOST}/api/sub-task/create`,
             headers: {
               authToken: user.authToken,
-              "Content-Type": "multipart/form-data",
+              
             },
             data
           })}

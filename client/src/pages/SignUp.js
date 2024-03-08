@@ -100,7 +100,7 @@ export const Signup = () => {
                 <div class="mt-3 text-left sm:mt-5">
                   <div class="inline-flex items-center w-full">
                     <h3 class="text-lg font-bold text-neutral-600 l eading-6 lg:text-5xl">
-                      Sign up
+                      Sign up & Collaborate
                     </h3>
                   </div>
                   <div class="mt-4 text-base text-gray-500">
