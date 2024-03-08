@@ -99,13 +99,20 @@ function TaskCard(props) {
           <ul className="divide-y w-full divide-gray-200 max-h-64 overflow-y-auto dark:divide-gray-700">
             {task.subTask.map((sub, index) => {
               return (
-                <li key={index} className="py-3 h-1/5 dark:text-white sm:py-4">
+                <li key={index} className="group relative py-3 h-1/5 dark:text-white sm:py-4">
+                  <span class="absolute scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">{sub.desc}</span>
                   <div className=" h-full flex items-start">
                     <div className="flex-1 h-full min-w-0 w-2/5">
                       <p   className="text-sm font-medium text-gray-900 truncate dark:text-white">
                       {sub.title}                        
                       </p>
                     </div>
+                    {/* <div class="group relative flex justify-center flex-1 h-full min-w-0 w-2/5">
+                      
+                      <p   className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        {sub.title}                        
+                      </p>
+                    </div> */}
                     <div className="w-2/5 h-full">{sub.deadline}</div>
                     <div className="flex-shrink-0 h-full w-1/5 cursor-pointer">
                       <CiViewList
