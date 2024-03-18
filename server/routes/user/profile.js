@@ -7,7 +7,6 @@ require("dotenv").config();
 
 const multer = require("multer");
 var MulterAzureStorage = require("multer-azure-storage");
-const io = require("../..");
 
 var upload = multer({
   storage: new MulterAzureStorage({

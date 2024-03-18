@@ -33,7 +33,7 @@ function Collabs(props) {
       });
       dispatch(updateLoading(false));
       showToast("Collaboration request sent.", "success");
-      socket.emit("invitesent");
+      // socket.emit("invitesent");
     } catch (error) {
       dispatch(updateLoading(false));
       showToast(error.response.data.error.message, "error");
