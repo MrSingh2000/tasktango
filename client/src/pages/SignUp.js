@@ -26,6 +26,7 @@ export const Signup = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
+
   const userSchema = yup.object().shape({
     username: yup
       .string()
@@ -100,11 +101,11 @@ export const Signup = () => {
                 <div class="mt-3 text-left sm:mt-5">
                   <div class="inline-flex items-center w-full">
                     <h3 class="text-lg font-bold text-neutral-600 l eading-6 lg:text-5xl">
-                      Sign up & Collaborate
+                      Sign up 
                     </h3>
                   </div>
                   <div class="mt-4 text-base text-gray-500">
-                    <p>Sign up and get our newest news.</p>
+                    <p>Sign up & Collaborate</p>
                   </div>
                 </div>
               </div>
