@@ -45,6 +45,7 @@ function Dashboard() {
   }, [userDetails]);
 
   useEffect(() => {
+    console.log("time")
     const intervalId = setInterval(() => {
       setCurrentDate(new Date());
     }, 1000);
@@ -81,7 +82,7 @@ function Dashboard() {
         </div>
       </div>
       <div className="flex md:flex-row items-center justify-evenly w-full flex-col">
-        <div className="flex flex-col mt-3 text-gray-700 bg-white dark:bg-neutral-700 dark:text-white shadow-md bg-clip-border rounded-xl  h-full w-72 lg:w-64 md:w-52">
+        <div className="flex flex-col mt-3 text-gray-700 bg-white dark:bg-gray-800 dark:text-white shadow-md bg-clip-border rounded-xl  h-full w-72 lg:w-64 md:w-52">
           <div className="px-4 py-3">
             <h4 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 w-full">
               TOTAL PENDING
@@ -94,7 +95,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col mt-3 text-gray-700 bg-white dark:bg-neutral-700 dark:text-white shadow-md bg-clip-border h-full rounded-xl    w-72 lg:w-64 md:w-52">
+        <div className="flex flex-col mt-3 text-gray-700 bg-white dark:bg-gray-800 dark:text-white shadow-md bg-clip-border h-full rounded-xl    w-72 lg:w-64 md:w-52">
           <div className="px-4 py-3">
             <h4 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 w-full">
               DEADLINES THIS WEEK
@@ -107,7 +108,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col mt-3 text-gray-700 bg-white dark:bg-neutral-700 dark:text-white shadow-md bg-clip-border h-full rounded-xl  w-72 lg:w-64 md:w-52">
+        <div className="flex flex-col mt-3 text-gray-700 bg-white dark:bg-gray-800 dark:text-white shadow-md bg-clip-border h-full rounded-xl  w-72 lg:w-64 md:w-52">
           <div className="px-4 py-3">
             <h4 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900 w-full">
               TOTAL PROJECTS
@@ -122,7 +123,7 @@ function Dashboard() {
         </div>
       </div>
       <div className="flex md:flex-row  justify-evenly p-3 items-center w-full flex-col mt-4">
-        <div className="block bg-white px-6 py-4 md:w-1/2 w-4/5 text-left font-medium rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+        <div className="block bg-white px-6 py-4 md:w-1/2 w-4/5 text-left font-medium rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-gray-800">
           RECENT ACTIVITY
           <ul className="w-full text-left">
             <li className="w-full border-b-2 font-normal text-left border-neutral-100 border-opacity-100 p-2 dark:border-opacity-50">
@@ -159,7 +160,7 @@ function Dashboard() {
             )}
           </ul>
         </div>
-        <div className="block px-6 py-2 md:w-2/5 w-4/5 text-left md:mt-0 font-medium  rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+        <div className="block px-6 py-2 md:w-2/5 w-4/5 text-left md:mt-0 font-medium  rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-gray-800">
           DEADLINES THIS WEEK
           <ul className="w-full text-left ">
             <li className="w-full border-b-2 font-normal text-left border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
