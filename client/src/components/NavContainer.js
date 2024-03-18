@@ -228,16 +228,16 @@ function TopNav() {
                 setShowSideBar(false);
               }}
               className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              to="/history"
+              to="/assigned"
             >
-              History
+              Assigned
             </Link><Link onClick={() => {
                 setShowSideBar(false);
               }}
               className="text-gray-800 hover:text-[#FABB18] dark:hover:bg:white hover:bg-black dark:text-white block px-10 py-6 rounded-lg text-base font-medium "
-              to="/assigned"
+              to="/notifications"
             >
-              Assigned
+              Notifications
             </Link>
             <Link onClick={() => {
                 setShowSideBar(false);
@@ -254,6 +254,7 @@ function TopNav() {
             >
               Log Out
             </Link>
+            
             
             
             <IoMdCloseCircle
